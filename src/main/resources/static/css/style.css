@@ -1,0 +1,1083 @@
+:root {
+    --bs-primary: #DAEFFF !important;
+    /* Xanh nhạt pastel */
+    --primary-hover: #BEDBFF;
+    --bs-secondary: #000000 !important;
+    /* Đen */
+    --bs-dark: #000000 !important;
+    --bs-light: #F5F5F5 !important;
+    --bs-body-color: #212529 !important;
+    --bs-body-bg: #FFFFFF !important;
+    --accent-color: #DAEFFF;
+}
+
+/* Navbar vàng thương hiệu */
+.navbar {
+    background-color: var(--bs-primary) !important;
+    padding: 0 !important;
+}
+
+.navbar .nav-link,
+.navbar-brand,
+.navbar-toggler-icon {
+    color: #000 !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+}
+
+.navbar a:hover {
+    color: #333 !important;
+}
+
+/* ===================== LOGO & BRANDING ===================== */
+.brand-logo-wrapper {
+    background: #000;
+    padding: 3px;
+    border-radius: 10px;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.brand-logo-img {
+    height: 50px;
+    width: auto;
+    border-radius: 6px;
+}
+
+.brand-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.brand-name {
+    font-size: 1.6rem !important;
+    color: #000 !important;
+    line-height: 1;
+    margin-bottom: 2px;
+    font-weight: 800 !important;
+}
+
+.brand-slogan {
+    font-size: 0.8rem !important;
+    color: #333 !important;
+    font-weight: 600 !important;
+}
+
+/* ============================================================ */
+
+/* Dark Mode Toggle Styling */
+#darkModeToggle {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#darkModeToggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+}
+
+/* Button vàng */
+.btn-primary {
+    background-color: var(--bs-primary) !important;
+    border: none !important;
+    color: #000 !important;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 207, 47, 0.3);
+}
+
+.btn-primary {
+    transition: all 0.3s ease;
+}
+
+/* Background brand light */
+.bg-brand-light {
+    background-color: #fff9e6 !important;
+}
+
+.text-brand {
+    color: var(--bs-primary) !important;
+}
+
+/* Search section focus */
+.search-section .form-control:focus,
+.search-section .form-select:focus {
+    border-color: var(--bs-primary) !important;
+    box-shadow: 0 0 0 0.25rem rgba(254, 207, 47, 0.25) !important;
+}
+
+
+/* Các tiêu đề chính */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--bs-dark) !important;
+}
+
+/* Footer đen + chữ trắng */
+footer {
+    background-color: var(--bs-dark) !important;
+    color: var(--bs-light) !important;
+    padding: 50px 0 20px 0;
+    border-top: 4px solid var(--bs-primary);
+}
+
+.bg-custom {
+    background-color: var(--bs-primary) !important;
+    color: #000 !important;
+}
+
+.bg-custom p,
+.bg-custom h3 {
+    color: #000 !important;
+}
+
+/* ===================== DROPDOWN MENU ===================== */
+
+/* Tổng thể dropdown */
+.navbar .dropdown-menu {
+    background-color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+    border-radius: 16px !important;
+    padding: 1.5rem 2rem !important;
+}
+
+/* Tiêu đề nhóm trong dropdown */
+.navbar .dropdown-menu h6 {
+    /*color: #0077b6 !important; !* xanh biển *!*/
+    font-weight: 700 !important;
+}
+
+/* Nhóm vùng (Miền Bắc / Miền Trung...) */
+.navbar .dropdown-menu p {
+    color: #212529 !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.3rem !important;
+}
+
+/* Link địa điểm */
+/* Booking Page Theme Overrides */
+.booking-avatar-bg {
+    background-color: #DAEFFF !important;
+    color: #000 !important;
+}
+
+.text-booking-primary {
+    color: #333 !important;
+    /* For text, a slightly darker color is better because DAEFFF is too light */
+}
+
+#bookingTabs .nav-link.active {
+    background-color: #DAEFFF !important;
+    color: #000 !important;
+}
+
+.booking-sidebar-active {
+    background-color: #DAEFFF !important;
+    color: #000 !important;
+}
+
+.navbar .dropdown-item {
+    color: #333 !important;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
+    padding: 6px 10px !important;
+}
+
+/* Hiệu ứng hover */
+.navbar .dropdown-item:hover {
+    background-color: #DAEFFF !important;
+    /* xanh pastel nhẹ */
+    color: #000 !important;
+}
+
+/* Loại bỏ hiện tượng mờ hoặc bị disabled */
+.navbar .dropdown-item:disabled {
+    opacity: 1 !important;
+    color: #999 !important;
+    background-color: transparent !important;
+}
+
+/* Chỉnh border giữa các phần */
+.navbar .dropdown-menu .border-bottom {
+    border-color: #e9ecef !important;
+}
+
+/* Banner (hero-section) */
+/* ============================= */
+/* Hero Section - Banner đầu trang */
+/* ============================= */
+.hero-section {
+    height: 35vh;
+    /* Chiều cao banner */
+    background-color: #f5f5f5;
+    /* Nền sáng dịu */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Căn giữa theo chiều dọc */
+    align-items: center;
+    /* Căn giữa theo chiều ngang */
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    padding-top: 90px;
+    /* Đẩy nội dung xuống để không bị navbar che */
+    box-sizing: border-box;
+}
+
+/* Dòng chữ hiệu ứng typing */
+#typing-text {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: 1px;
+    /*color: #1E90FF;*/
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: typing 2s steps(34, end) 1 normal both;
+    /* Hiệu ứng gõ chữ */
+    line-height: 1.3;
+    padding-bottom: 10px;
+    /* Tạo khoảng trống để không bị cắt chữ */
+}
+
+/* Hiệu ứng gõ từng chữ */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* Responsive cho màn nhỏ */
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 100px;
+        /* đẩy thêm chút cho mobile */
+        height: auto;
+    }
+
+    #typing-text {
+        white-space: normal;
+        /* Cho phép xuống dòng */
+        width: 100% !important;
+        /* Hiển thị toàn bộ chữ */
+        overflow: visible;
+        /* Không ẩn phần dư */
+        animation: none;
+        /* Tắt hiệu ứng typing trên mobile */
+        text-align: center;
+        font-size: 1.6rem;
+        /* Giảm kích thước cho vừa khung */
+    }
+}
+
+/* Carousel item */
+#reviewCarousel .carousel-item {
+    background-color: transparent !important;
+    color: #000 !important;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+/* Phần nội dung đánh giá */
+#reviewCarousel blockquote {
+    background-color: transparent !important;
+    color: #000 !important;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 700px;
+    font-size: 1.1rem;
+    font-style: italic;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Tên người đánh giá */
+#reviewCarousel .blockquote-footer {
+    background-color: transparent !important;
+    color: #555 !important;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 0.3rem;
+    /* giảm khoảng cách giữa nội dung và tên */
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+.btn-outline-primary {
+    background-color: #FECF2F !important;
+    color: #000000 !important;
+    border-color: #FECF2F !important;
+    font-weight: 40px;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-hover) !important;
+    color: white !important;
+}
+
+/* Link and interactive colors */
+a {
+    color: #000;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+/* ===================== DROPDOWN & MEGA MENU TỐI ƯU ===================== */
+
+/* 1. Mặc định cho MOBILE (Dưới 992px) */
+@media (max-width: 991.98px) {
+    .navbar .dropdown-menu {
+        width: 100% !important;
+        position: static !important;
+        /* Quan trọng: Để nó đẩy các menu khác xuống thay vì nằm đè lên */
+        transform: none !important;
+        float: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding: 1rem !important;
+        border-bottom: 1px solid #eee !important;
+    }
+
+    /* Chia lại cột trên mobile để không bị quá hẹp */
+    .mega-menu .col-6 {
+        width: 50%;
+    }
+
+    .mega-menu .col-md-6 {
+        margin-bottom: 20px;
+    }
+}
+
+/* 2. Cho DESKTOP (Từ 992px trở lên) */
+@media (min-width: 992px) {
+
+    /* Ép thẻ li cha phải có position static để menu con rộng theo container của Navbar */
+    .nav-item.dropdown.position-static-lg {
+        position: static !important;
+    }
+
+    .mega-menu {
+        width: 90vw !important;
+        /* Tăng độ rộng để đẹp hơn */
+        max-width: 1100px;
+        left: 50% !important;
+        top: 100% !important;
+        transform: translateX(-50%) !important;
+        display: none;
+        /* Mặc định ẩn, Bootstrap sẽ tự hiển thị khi click */
+    }
+
+    .navbar .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        /* (Tùy chọn) Hiện khi hover nếu muốn */
+    }
+}
+
+/* 3. Style nội dung bên trong (Dùng chung) */
+.navbar .dropdown-menu h6 {
+    /*color: #0077b6 !important;*/
+    font-weight: 700 !important;
+    font-size: 1rem;
+}
+
+.navbar .dropdown-item {
+    white-space: normal;
+    /* Cho phép chữ xuống dòng nếu quá dài */
+    padding: 8px 12px !important;
+}
+
+/* Lưới lịch 7 cột */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.day-label {
+    font-weight: bold;
+    padding-bottom: 10px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Ô ngày chung */
+.calendar-day {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+    transition: all 0.2s ease;
+    background-color: #fff;
+}
+
+/* Ngày có tour và giá */
+.has-tour {
+    border-color: #dc3545;
+    /* Màu đỏ bootstrap */
+    cursor: pointer;
+}
+
+.has-tour:hover {
+    background-color: #fff5f5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.1);
+}
+
+/* Ngày đang được chọn (Active) */
+.has-tour.active-day {
+    background-color: #fff;
+    border: 2px solid #dc3545;
+    position: relative;
+}
+
+/* Số ngày */
+.day-num {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Giá vé dưới số ngày */
+.price-sub {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #dc3545;
+    margin-top: 2px;
+}
+
+/* Ngày của tháng khác */
+.other-month {
+    color: #ccc;
+    background-color: #f9f9f9;
+    border: none;
+}
+
+.row-cols-7>* {
+    flex: 0 0 auto;
+    width: 14.2857%;
+    padding-right: var(--bs-gutter-x, 0.25rem);
+    padding-left: var(--bs-gutter-x, 0.25rem);
+}
+
+.row-cols-7 .col>div {
+    min-height: 40px;
+    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.calendar-day {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    min-height: 60px;
+    /* Phải có chiều cao để có diện tích click */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.2s;
+}
+
+/* Hiệu ứng khi di chuột */
+.calendar-day:hover {
+    border-color: #ffc107;
+    background-color: #fff9e6;
+}
+
+/* Màu sắc khi ngày được chọn */
+.calendar-day.active-day {
+    border: 2px solid #dc3545;
+    background-color: #fff5f5;
+}
+
+/* Màu sắc cho các ngày thuộc tháng khác (mờ đi) */
+.calendar-day.other-month {
+    color: #ccc;
+    background-color: #f9f9f9;
+    pointer-events: none;
+    /* Không cho click vào ngày tháng khác */
+    border: none;
+}
+
+/* Màu sắc cho các nút chọn tháng khi được chọn */
+.month-btn.active {
+    background-color: #ffc107 !important;
+    /* Màu vàng như trong ảnh */
+    color: #000 !important;
+    border: none;
+}
+
+/* Ngày đã qua: mờ đi, gạch ngang số và không cho bấm */
+.disabled-day {
+    background-color: #f1f3f5 !important;
+    color: #adb5bd !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+    /* Chặn click chuột hoàn toàn */
+}
+
+.disabled-day .day-num {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+/* Giữ nguyên màu cho ngày thuộc tháng khác nhưng chưa qua */
+.other-month:not(.disabled-day) {
+    color: #ccc;
+}
+
+.card-header {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.sticky-price-box {
+    /*position: -webkit-sticky; */
+    position: sticky;
+    top: 80px;
+    /* Khoảng cách từ mép trên trình duyệt khi trôi (tùy chỉnh theo chiều cao navbar của mày) */
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+/* CSS cho ngày đã qua (như đã nói ở bước trước) */
+.disabled-day {
+    background-color: #f1f3f5 !important;
+    color: #adb5bd !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+.disabled-day .day-num {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+/* Sidebar Menu Styling */
+.profile-sidebar-menu .menu-item a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: block;
+    transition: 0.3s;
+}
+
+.profile-sidebar-menu .menu-item.active>a {
+    color: #000;
+    font-weight: 700;
+}
+
+.profile-sidebar-menu .sub-menu a {
+    font-size: 0.9rem;
+    color: #666;
+    padding: 5px 0;
+    display: block;
+    font-weight: normal;
+}
+
+.profile-sidebar-menu .sub-menu a:hover {
+    color: var(--bs-primary);
+}
+
+/* Custom Search Box */
+.search-box-container .form-control:focus {
+    box-shadow: none;
+    background-color: #fff;
+}
+
+/* Tabs Styling */
+.nav-tabs .nav-link {
+    border: none;
+    color: #555;
+    transition: all 0.3s;
+}
+
+.nav-tabs .nav-link.active {
+    /*color: #0056b3 !important;*/
+    background-color: transparent !important;
+}
+
+/* Card Shadow */
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+}
+
+/* Biểu tượng yêu thích */
+.text-danger {
+    color: #e31c25 !important;
+}
+
+.rating {
+    direction: rtl;
+    display: inline-flex;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    font-size: 28px;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rating input:checked~label {
+    color: #ffc107;
+}
+
+.rating label:hover,
+.rating label:hover~label {
+    color: #ffc107;
+}
+
+.star-rating {
+    direction: rtl;
+    display: inline-flex;
+    gap: 4px;
+}
+
+.star-rating label {
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star-rating input:checked~label {
+    color: #ffc107;
+}
+
+.star-rating label:hover,
+.star-rating label:hover~label {
+    color: #ffc107;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* ===================== MEMBERSHIP TIERS ===================== */
+.tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.tier-bronze {
+    background: linear-gradient(135deg, #f4e8d8, #dcb99c);
+    color: #8c5332;
+    border: 1px solid rgba(205, 127, 50, 0.4);
+}
+
+.tier-silver {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    color: #555;
+    border: 1px solid rgba(192, 192, 192, 0.6);
+}
+
+.tier-gold {
+    background: linear-gradient(135deg, #fff9e6, #ffe58f);
+    color: #a37200;
+    border: 1px solid rgba(255, 215, 0, 0.6);
+}
+
+.tier-platinum {
+    background: linear-gradient(135deg, #ffffff, #e6e6e6);
+    color: #333;
+    border: 1px solid rgba(160, 160, 160, 0.6);
+}
+
+.tier-diamond {
+    background: linear-gradient(135deg, #e3f2fd, #90caf9, #5c6bc0);
+    color: #fff;
+    border: 1px solid rgba(92, 107, 192, 0.4);
+}
+
+/* Progress bar next tier */
+.tier-progress-wrap {
+    background: rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.tier-progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bronze {
+    background: linear-gradient(90deg, #cd7f32, #a0522d);
+}
+
+.silver {
+    background: linear-gradient(90deg, #a8a8a8, #707070);
+}
+
+.gold {
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+}
+
+.platinum {
+    background: linear-gradient(90deg, #e5e4e2, #a0a0a0);
+}
+
+.diamond {
+    background: linear-gradient(90deg, #42a5f5, #5c6bc0);
+}
+
+/* ===================== PREMIUM INDEX DESIGN ===================== */
+/* Hero Section */
+.hero-section {
+    min-height: 80vh !important;
+    background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* Parallax effect */
+    margin-top: -60px;
+    /* Overlap navbar slightly if transparent, or just fill */
+    padding-top: 100px;
+    /* Space for navbar */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.text-shadow-sm {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Floating Search */
+.floating-search-section {
+    position: relative;
+    z-index: 10;
+    margin-top: -80px;
+}
+
+.search-card {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.btn-search-hover {
+    transition: all 0.3s ease;
+}
+
+.btn-search-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(254, 207, 47, 0.4) !important;
+}
+
+/* Background Gradients */
+.bg-light-gradient {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+
+
+/* Section Title Underline */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: var(--bs-primary);
+    border-radius: 2px;
+}
+
+/* Cards & Animations */
+.destination-card,
+.tour-card,
+.review-card {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.destination-card:hover,
+.tour-card:hover,
+.review-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.img-zoom-wrapper,
+.img-zoom {
+    overflow: hidden;
+}
+
+.img-zoom-wrapper img,
+.img-zoom img {
+    transition: transform 0.6s ease;
+}
+
+.destination-card:hover .img-zoom-wrapper img,
+.tour-card:hover .img-zoom img {
+    transform: scale(1.1);
+}
+
+.destination-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+    z-index: 2;
+}
+
+.object-cover {
+    object-fit: cover !important;
+}
+
+/* Text Truncate */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Tour overlay action */
+.tour-overlay-action {
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+}
+
+.transition-ease {
+    transition: all 0.4s ease;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+.tour-card:hover .tour-overlay-action {
+    opacity: 1;
+}
+
+/* Reviews Carousel */
+.tracking-wider {
+    letter-spacing: 2px;
+}
+
+.nav-btn {
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background-color: var(--bs-primary) !important;
+    transform: scale(1.1);
+}
+
+
+/* 1. Header & Footer (Darker than Pastel) */
+header,
+footer,
+.navbar,
+.bg-custom,
+footer.bg-dark {
+    background-color: #AED6F1 !important;
+    color: #000000 !important;
+}
+
+/* Override text inside Footer / Header */
+footer *,
+.navbar * {
+    color: #000000 !important;
+}
+
+.navbar .nav-link:hover {
+    color: #3498DB !important;
+}
+
+/* Exceptionally keep images and elements looking okay */
+img {
+    color: inherit;
+    /* no-op but safe */
+}
+
+/* 3. Text globally Black */
+*,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+div,
+a,
+li,
+.text-muted,
+.text-secondary,
+.text-dark,
+.text-booking-primary {
+    color: #000000 !important;
+}
+
+/* Except price colors which can stay red or just black. Let's make them black as requested "chỉnh màu chữ thành đen cho dễ nhìn" */
+.text-danger {
+    color: #c0392b !important;
+    /* Keep a bit of red for prices but readable on blue */
+}
+
+/* 4. Convert all Yellows (warnings) to Blue (#3498DB) */
+.tour-badge.bg-primary {
+    background-color: #3498DB !important;
+    color: #000000 !important;
+    border-color: #3498DB !important;
+}
+
+.btn-warning:hover {
+    background-color: #2874A6 !important;
+    color: #fff !important;
+    /* White text on dark blue button is okay, or black */
+}
+
+.text-warning,
+.text-bs-warning {
+    color: #21618C !important;
+    /* Dark blue for warning text */
+}
+
+.border-warning {
+    border-color: #3498DB !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #555 !important;
+}
+
+/* Overrides for specific primary buttons that might be colored Pastel Blue (#DAEFFF) to look consistent */
+.btn-primary {
+    background-color: #3498DB !important;
+    border-color: #3498DB !important;
+    color: #000000 !important;
+}
+
+.btn-primary:hover {
+    background-color: #2874A6 !important;
+    color: #fff !important;
+}
+
+/* Force Star colors to override the global wildcard black */
+.bi-star-fill, .bi-star, i[class*="bi-star"] {
+    color: #FFC107 !important;
+}
+
+/* Force outline buttons hover to layout background (#AED6F1) */
+[class*="btn-outline-"]:hover,
+.btn-outline-dark:hover,
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover {
+    background-color: #AED6F1 !important;
+    color: #000000 !important;
+    border-color: #AED6F1 !important;
+}
+
+/* GLOBAL PAGINATION STANDARDIZATION */
+.pagination {
+    gap: 5px;
+}
+
+.page-link {
+    color: #000;
+    border: none;
+    font-weight: 600;
+    border-radius: 50px !important;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s;
+    background-color: #ffffff;
+    padding: 0 15px;
+}
+
+.page-item.active .page-link,
+.page-item.active span.page-link {
+    background-color: #3498DB !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+}
+
+.page-link:hover {
+    background-color: #AED6F1 !important;
+    color: #000000 !important;
+    transform: translateY(-2px);
+}
+
+.page-item.disabled .page-link {
+    background-color: #f8f9fa !important;
+    color: #adb5bd !important;
+    box-shadow: none;
+    transform: none;
+}

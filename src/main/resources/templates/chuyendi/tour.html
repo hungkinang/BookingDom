@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout :: layout(~{::content})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Khám phá Tour - ZakiBooking</title>
+</head>
+<body>
+<content>
+    <!-- CSS Tùy chỉnh riêng cho Danh sách Tour -->
+    <style>
+        .page-header-luxury {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1542314831-c6a4d14b8849?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 8rem 0 4rem 0;
+            border-radius: 0 0 3rem 3rem;
+            margin-top: -80px;
+        }
+
+        .filter-glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .btn-luxury-primary {
+            background: linear-gradient(135deg, #3498DB 0%, #2E86C1 100%) !important;
+            border: none !important;
+            color: #fff !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-luxury-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
+            color: #fff !important;
+        }
+
+        .horizontal-tour-card {
+            background: #fff;
+            border-radius: 1.5rem;
+            border: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+            margin-bottom: 25px;
+        }
+
+        .horizontal-tour-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .tour-image-box {
+            width: 300px;
+            height: 100%;
+            min-height: 230px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tour-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .horizontal-tour-card:hover .tour-image-box img {
+            transform: scale(1.08);
+        }
+
+        .minimal-input {
+            border: 2px solid #edf2f7;
+            background-color: #f8fafc;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .minimal-input:focus {
+            border-color: #3498DB;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+
+        .pagination .page-link {
+            border-radius: 0.5rem;
+            margin: 0 4px;
+            border: none;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        .pagination .page-item.active .page-link {
+            background: #3498DB;
+            color: white;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+    </style>
+
+    <!-- Header Section -->
+    <section class="page-header-luxury text-center">
+        <div class="container position-relative z-2">
+            <h1 class="display-4 fw-bolder text-white mb-3 tracking-tight">Kỳ nghỉ mơ ước của bạn</h1>
+            <p class="fs-5 text-light opacity-75">Hàng trăm điểm đến tuyệt vời đang chờ bạn khám phá cùng ZakiBooking</p>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <div class="container" style="margin-top: -40px; margin-bottom: 80px; position: relative; z-index: 5;">
+        <div class="row align-items-start g-4">
+            
+            <!-- Bộ lọc (Sidebar) -->
+            <div class="col-lg-3">
+                <div class="filter-glass-card p-4 sticky-top" style="top: 100px;">
+                    <div class="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom border-secondary-subtle">
+                        <i class="bi bi-funnel text-primary fs-4"></i>
+                        <h5 class="fw-bolder mb-0 text-dark">Lọc Tìm Kiếm</h5>
+                    </div>
+                    
+                    <form method="GET" th:action="@{/tour}">
+                        <div class="mb-4">
+                            <label class="form-label text-secondary small fw-bold text-uppercase">Điểm đến</label>
+                            <select class="form-select minimal-input py-2" name="diemDen">
+                                <option value="">Tất cả khu vực</option>
+                                <option value="Sapa" th:selected="${diemDenSelected == 'Sapa'}">Sapa</option>
+                                <option value="Hạ Long" th:selected="${diemDenSelected == 'Hạ Long'}">Hạ Long</option>
+                                <option value="Đà Nẵng" th:selected="${diemDenSelected == 'Đà Nẵng'}">Đà Nẵng</option>
+                                <option value="Huế" th:selected="${diemDenSelected == 'Huế'}">Huế</option>
+                                <option value="Phú Quốc" th:selected="${diemDenSelected == 'Phú Quốc'}">Phú Quốc</option>
+                                <option value="Cần Thơ" th:selected="${diemDenSelected == 'Cần Thơ'}">Cần Thơ</option>
+                                <option value="Thái Lan" th:selected="${diemDenSelected == 'Thái Lan'}">Thái Lan</option>
+                                <option value="Singapore" th:selected="${diemDenSelected == 'Singapore'}">Singapore</option>
+                                <option value="Hàn Quốc" th:selected="${diemDenSelected == 'Hàn Quốc'}">Hàn Quốc</option>
+                                <option value="Pháp" th:selected="${diemDenSelected == 'Pháp'}">Pháp</option>
+                                <option value="Đức" th:selected="${diemDenSelected == 'Đức'}">Đức</option>
+                                <option value="Mỹ" th:selected="${diemDenSelected == 'Mỹ'}">Mỹ</option>
+                                <option value="Canada" th:selected="${diemDenSelected == 'Canada'}">Canada</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-secondary small fw-bold text-uppercase">Khoảng ngân sách</label>
+                            <select class="form-select minimal-input py-2" name="khoangGia">
+                                <option value="">Tất cả ngân sách</option>
+                                <option value="DUOI5" th:selected="${khoangGiaSelected == 'DUOI5'}">Tiết kiệm (Dưới 5 triệu)</option>
+                                <option value="5_10" th:selected="${khoangGiaSelected == '5_10'}">Phổ thông (5 - 10 triệu)</option>
+                                <option value="TREN10" th:selected="${khoangGiaSelected == 'TREN10'}">Cao cấp (Trên 10 triệu)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-luxury-primary w-100 py-3 rounded-pill fw-bold fs-6">
+                            Áp dụng bộ lọc
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Kết quả tìm kiếm (Main List) -->
+            <div class="col-lg-9 mt-5 mt-lg-0">
+                <!-- Sắp xếp & Số lượng Result -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+                    <p class="mb-2 mb-md-0 fs-6 text-secondary">Khám phá <strong class="text-dark fs-5" th:text="${dem}"></strong> chuyến đi phù hợp</p>
+                    <form method="get" th:action="@{/tour}" class="d-flex align-items-center">
+                        <input type="hidden" name="diemDen" th:value="${diemDenSelected}">
+                        <input type="hidden" name="khoangGia" th:value="${khoangGiaSelected}">
+                        <span class="me-2 small text-muted text-nowrap"><i class="bi bi-sort-down me-1"></i>Sắp xếp:</span>
+                        <select class="form-select border-0 bg-light fw-medium rounded-pill" name="sort" onchange="this.form.submit()" style="cursor: pointer; width: 160px;">
+                            <option value="">Gợi ý hàng đầu</option>
+                            <option value="priceAsc" th:selected="${sortSelected == 'priceAsc'}">Giá thấp nhất</option>
+                            <option value="priceDesc" th:selected="${sortSelected == 'priceDesc'}">Giá cao nhất</option>
+                        </select>
+                    </form>
+                </div>
+
+                <!-- Danh sách Tour -->
+                <div th:if="${not #lists.isEmpty(dschuyendi)}">
+                    <div class="horizontal-tour-card d-flex flex-column flex-md-row" th:each="ds : ${dschuyendi}">
+                        <!-- Ảnh bên trái -->
+                        <div class="tour-image-box">
+                            <div class="position-absolute top-0 start-0 m-3 z-3">
+                                <span class="badge bg-white text-danger shadow-sm rounded-pill px-3 py-2 fw-bold"><i class="bi bi-fire me-1"></i>Được săn đón</span>
+                            </div>
+                            <img th:src="${ds.hinhAnh}" alt="" />
+                        </div>
+                        
+                        <!-- Nội dung bên phải -->
+                        <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h4 class="fw-bolder text-dark mb-0 pe-3 lh-base" th:text="${ds.tieuDe}"></h4>
+                                    <div class="text-warning text-nowrap" style="color: #FFC107 !important; font-size: 0.8rem;">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    <i class="bi bi-ticket-perforated text-primary me-1"></i> Mã vé: <strong>NNCTH1600</strong>
+                                    <span class="mx-2 text-black-50">|</span>
+                                    <i class="bi bi-car-front text-primary me-1"></i> Di chuyển: <strong th:text="${ds.idPhuongTien.loai}"></strong>
+                                </p>
+                                
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <span class="badge bg-light text-secondary border px-2 py-1"><i class="bi bi-check-circle-fill text-success me-1"></i>Hủy miễn phí</span>
+                                    <span class="badge bg-light text-secondary border px-2 py-1"><i class="bi bi-check-circle-fill text-success me-1"></i>Không phí ẩn</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end border-top pt-3 mt-auto">
+                                <div class="mb-3 mb-sm-0">
+                                    <p class="small text-secondary mb-0">Giá mỗi khách từ</p>
+                                    <h3 class="text-danger fw-bolder mb-0" th:text="${#numbers.formatDecimal(ds.gia, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></h3>
+                                </div>
+                                <a th:href="@{/tour/{id}(id=${ds.id})}" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-bold d-flex align-items-center justify-content-center gap-2 transition-all"
+                                   style="border-width: 2px;"
+                                   onmouseover="this.style.background='#212529'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#212529';">
+                                    Xem chi tiết <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trạng thái trống -->
+                <div th:if="${#lists.isEmpty(dschuyendi)}" class="text-center bg-white p-5 rounded-4 shadow-sm my-4">
+                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-state-2130362-1800926.png" width="200" class="opacity-50 mb-4" alt="Trống">
+                    <h4 class="fw-bolder text-dark mb-2">Chưa tìm thấy hành trình phù hợp</h4>
+                    <p class="text-secondary mb-0">Rất tiếc, kho lưu trữ trạm tìm kiếm không có kết quả với bộ lọc hiện tại. Hãy thử mở rộng tìm kiếm của bạn.</p>
+                </div>
+
+                <!-- Phân trang -->
+                <div th:if="${totalPage > 0}" aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-5 mb-0">
+                        <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                            <a class="page-link shadow-sm" th:href="@{/tour(page=${page - 1}, perPage=${perPage})}">&laquo;</a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPage - 1)}" th:classappend="${i == page} ? 'active'">
+                            <a class="page-link shadow-sm" th:href="@{/tour(page=${i}, perPage=${perPage})}" th:text="${i + 1}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${page == totalPage - 1} ? 'disabled'">
+                            <a class="page-link shadow-sm" th:href="@{/tour(page=${page + 1}, perPage=${perPage})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</content>
+</body>
+</html>

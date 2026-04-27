@@ -1,0 +1,305 @@
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/layout :: layout(~{::section})">
+<section>
+    <style>
+        /* Luxury overrides exclusively for index */
+        .hero-section {
+            min-height: 85vh !important;
+            border-radius: 0 0 3rem 3rem;
+            margin-top: -80px;
+            padding-top: 120px;
+        }
+
+        .glass-search-card {
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            border-radius: 1.5rem !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important;
+            transform: translateY(-50%);
+            margin-bottom: -100px;
+        }
+
+        .minimal-input {
+            background: rgba(255, 255, 255, 0.7) !important;
+            border: 1px solid transparent !important;
+            transition: all 0.3s ease;
+        }
+
+        .minimal-input:focus {
+            background: #fff !important;
+            border-color: #3498DB !important;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2) !important;
+        }
+
+        .luxury-card {
+            border-radius: 1.5rem !important;
+            overflow: hidden;
+            border: none !important;
+            background: #fff;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .luxury-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .portrait-img-box {
+            height: 480px;
+            /* Taller destination cards */
+            position: relative;
+        }
+
+        .gradient-dark-bottom {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+        }
+
+        .btn-luxury-primary {
+            background: linear-gradient(135deg, #3498DB 0%, #2E86C1 100%) !important;
+            border: none !important;
+            color: #fff !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-luxury-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
+            color: #fff !important;
+        }
+
+        .tour-badge-luxury {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            color: #c0392b !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <!-- HERO SECTION (GRAND ENTRANCE) -->
+    <header class="hero-section text-white d-flex align-items-center justify-content-center position-relative">
+        <div class="hero-overlay" style="border-radius: 0 0 3rem 3rem;"></div>
+        <div class="container text-center hero-content position-relative z-2" style="margin-top: -50px;">
+            <h1 class="fw-bolder display-3 mb-4 text-white text-shadow-sm tracking-tight">Hành trình tuyệt mỹ<br>đang
+                chờ đón bạn</h1>
+            <p class="lead fw-medium mb-5 text-light text-shadow-sm fs-5" style="max-width: 650px; margin: 0 auto;">Khám
+                phá các kỳ quan và văn hóa thế giới cùng nền tảng đặt tour cao cấp ZakiBooking</p>
+        </div>
+    </header>
+
+    <!-- FLOATING SEARCH BAR (GLASSMORPHISM) -->
+    <section class="position-relative z-3">
+        <div class="container">
+            <div class="glass-search-card p-4 p-md-5">
+                <form method="GET" th:action="@{/tour}" autocomplete="off" class="m-0">
+                    <div class="row g-4 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase tracking-wider mb-2"
+                                style="color: #4a5568 !important;">Điểm đến</label>
+                            <div class="input-group">
+                                <span class="input-group-text minimal-input border-end-0 bg-transparent text-primary"><i
+                                        class="bi bi-geo-alt"></i></span>
+                                <input type="text"
+                                    class="form-control form-control-lg minimal-input border-start-0 px-2"
+                                    name="diemDen" placeholder="Bạn muốn đến đâu?" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase tracking-wider mb-2"
+                                style="color: #4a5568 !important;">Ngày khởi hành</label>
+                            <div class="input-group">
+                                <span class="input-group-text minimal-input border-end-0 bg-transparent text-primary"><i
+                                        class="bi bi-calendar-event"></i></span>
+                                <input type="date"
+                                    class="form-control form-control-lg minimal-input border-start-0 px-2" name="ngayDi"
+                                    id="ngayDi" th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold text-slate-700 small text-uppercase tracking-wider mb-2"
+                                style="color: #4a5568 !important;">Ngân sách</label>
+                            <div class="input-group">
+                                <span class="input-group-text minimal-input border-end-0 bg-transparent text-primary"><i
+                                        class="bi bi-wallet2"></i></span>
+                                <select class="form-select form-select-lg minimal-input border-start-0 px-2"
+                                    name="khoangGia">
+                                    <option value="">Tất cả mức giá</option>
+                                    <option value="DUOI5">Dưới 5 triệu</option>
+                                    <option value="5_10">5 - 10 triệu</option>
+                                    <option value="TREN10">Trên 10 triệu</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit"
+                                class="btn btn-luxury-primary btn-lg w-100 rounded-pill fw-bolder fs-5 text-white">
+                                Tìm kiếm
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- DESTINATIONS SECTION (PREMIUM GRID) -->
+    <section class="py-5 mt-5">
+        <div class="container pt-5">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h2 class="fw-bolder display-6 text-dark mb-1">Điểm đến thịnh hành</h2>
+                    <p class="text-secondary mb-0 fs-5">Những cung đường hấp dẫn nhất, được du khách bình chọn</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4" th:each="dd : ${dsNoiBat}">
+                    <a th:href="@{/tour/{id}(id=${dd.id})}" class="text-decoration-none">
+                        <div class="luxury-card position-relative portrait-img-box img-zoom-wrapper">
+                            <img th:src="@{${dd.hinhAnh}}" class="w-100 h-100 object-cover position-absolute"
+                                style="top:0; left:0;" alt="Destination">
+                            <div class="gradient-dark-bottom d-flex flex-column justify-content-end p-5 position-absolute w-100 h-100"
+                                style="bottom:0; z-index:2;">
+                                <span
+                                    class="badge bg-light text-dark mb-2 align-self-start fw-bold rounded-pill px-3 py-1 shadow-sm fs-6"><i
+                                        class="bi bi-pin-map-fill text-primary me-1"></i>[[${dd.chauLuc}]]</span>
+                                <h3 class="text-white fw-bolder mb-0 display-6 text-shadow-sm" th:text="${dd.thanhPho}">
+                                </h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POPULAR TOURS SECTION (MINIMALIST CARDS) -->
+    <section class="py-5 bg-light mt-4" style="border-radius: 3rem 3rem 0 0;">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder display-6 text-dark mb-2">Trải nghiệm khác biệt</h2>
+                <p class="text-secondary fs-5 w-75 mx-auto">Các chuyến đi chất lượng cao cấp được thiết kế riêng, chắt
+                    lọc những tinh hoa văn hóa địa phương nhằm đem lại sự hài lòng tuyệt đối.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4" th:each="ds : ${dsnoibatcd}">
+                    <div class="luxury-card h-100 d-flex flex-column border-0">
+                        <!-- Image & Badge -->
+                        <div class="img-zoom-wrapper position-relative" style="height: 280px;">
+                            <img th:src="@{${ds.hinhAnh}}" class="w-100 h-100 object-cover" alt="Tour" />
+                            <div
+                                class="tour-badge-luxury position-absolute top-0 end-0 mt-3 me-3 px-3 py-1 rounded-pill fw-bold z-3 text-sm">
+                                <i class="bi bi-fire me-1"></i> Bán chạy
+                            </div>
+                            <!-- Subtle action overlay -->
+                            <div class="position-absolute w-100 h-100 top-0 start-0 d-flex justify-content-center align-items-center opacity-0 transition-ease"
+                                style="background: rgba(0,0,0,0.2); z-index:2;" onmouseover="this.style.opacity='1'"
+                                onmouseout="this.style.opacity='0'">
+                                <a th:href="@{/tour/{id}(id=${ds.id})}"
+                                    class="btn btn-light rounded-pill px-4 fw-bold shadow-lg">Khám phá</a>
+                            </div>
+                        </div>
+
+                        <!-- Content Details -->
+                        <div class="p-4 flex-grow-1 d-flex flex-column bg-white">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="text-warning mb-1" style="color: #FFC107 !important;">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <span class="ms-2 text-secondary small fw-medium">Tuyệt hảo</span>
+                            </div>
+
+                            <h5 class="fw-bold text-dark text-truncate-2 mb-3 lh-base" style="font-size: 1.25rem;"
+                                th:text="${ds.tieuDe}"></h5>
+
+                            <!-- Bottom Info -->
+                            <div class="mt-auto d-flex justify-content-between align-items-end">
+                                <div>
+                                    <p class="text-secondary small mb-1">Chỉ từ</p>
+                                    <span class="text-danger fw-bolder fs-4 lh-1"
+                                        th:text="${#numbers.formatDecimal(ds.gia, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
+                                </div>
+                                <a th:href="@{/tour/{id}(id=${ds.id})}"
+                                    class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 45px; height: 45px; border-width: 2px; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"
+                                    onmouseover="this.style.background='#212529'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#212529';">
+                                    <i class="bi bi-arrow-right fs-5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a th:href="@{/tour}"
+                    class="btn btn-outline-dark btn-lg rounded-pill fw-bold px-5 py-3 shadow-sm hover-elevate transition-all"
+                    style="border-width: 2px;"
+                    onmouseover="this.style.background='#212529'; this.style.color='white'; this.style.transform='translateY(-3px)';" 
+                    onmouseout="this.style.background='transparent'; this.style.color='#212529'; this.style.transform='translateY(0)';">
+                    Xem toàn bộ bộ sưu tập <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-white text-center" style="border-radius: 3rem;">
+        <div class="container py-5">
+            <h2 class="fw-bolder display-6 text-dark mb-5">Được Du Khách Tin Tưởng</h2>
+
+            <div id="reviewCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel"
+                data-bs-interval="5000">
+                <div class="carousel-inner px-md-5">
+                    <div class="carousel-item" th:each="dsdg, iterStat : ${dsDanhGia}"
+                        th:classappend="${iterStat.index == 0} ? 'active'">
+                        <div class="mx-auto" style="max-width: 900px;">
+                            <i class="bi bi-quote d-block mx-auto mb-4"
+                                style="font-size: 3rem; color: #DAEFFF; line-height: 1;"></i>
+
+                            <p class="display-6 fw-medium text-dark lh-base fst-italic mb-5" style="font-size: 1.8rem;">
+                                "[[${dsdg.binhLuan}]]"
+                            </p>
+
+                            <div class="d-flex align-items-center justify-content-center flex-column">
+                                <div class="rounded-circle overflow-hidden shadow-sm mb-3"
+                                    style="width: 70px; height: 70px; border: 3px solid #fff;">
+                                    <h1 class="mt-2 text-secondary bg-light h-100 w-100 m-0 d-flex align-items-center justify-content-center"
+                                        th:if="${dsdg.idNguoiDung.anhDaiDien == null}"
+                                        th:text="${dsdg.idNguoiDung.hoTen.substring(0,1).toUpperCase()}"></h1>
+                                    <img th:if="${dsdg.idNguoiDung.anhDaiDien != null}"
+                                        th:src="${dsdg.idNguoiDung.anhDaiDien}" alt="Avatar"
+                                        class="w-100 h-100 object-cover">
+                                </div>
+                                <h5 class="fw-bold text-dark mb-1 tracking-widest text-uppercase text-sm"
+                                    th:text="${dsdg.idNguoiDung.hoTen}"></h5>
+                                <div class="text-warning small mb-2" style="color: #FFC107 !important;">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p class="small text-secondary mb-0">Tour: <a
+                                        th:href="@{/tour/{id}(id=${dsdg.idChuyenDi.id})}"
+                                        class="text-primary fw-bold text-decoration-none"
+                                        th:text="${dsdg.idChuyenDi.tieuDe}"></a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel"
+                    data-bs-slide="prev" style="width: 10%;">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"
+                        style="width: 2rem; height: 2rem;"></span>
+                    <span class="visually-hidden">Trước</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel"
+                    data-bs-slide="next" style="width: 10%;">
+                    <span class="carousel-control-next-icon" aria-hidden="true"
+                        style="width: 2rem; height: 2rem;"></span>
+                    <span class="visually-hidden">Tiếp</span>
+                </button>
+            </div>
+        </div>
+    </section>
+</section>
+
+</html>

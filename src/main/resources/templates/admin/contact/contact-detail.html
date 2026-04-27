@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout/admin_layout :: head('Chi tiết Liên Hệ')}"></head>
+
+<body>
+<header th:replace="~{layout/admin_layout:: header()}"></header>
+<div class="d-flex">
+    <nav th:replace="~{layout/admin_layout :: nav()}"></nav>
+    <section class="flex-grow-1 bg-light">
+        <div class="container-fluid p-4">
+            
+            <!-- Breadcrumbs / Top Navigation -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a th:href="@{/admin/contact}" class="text-decoration-none text-muted fw-bold">Hòm thư</a></li>
+                        <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">Nội dung chi tiết</li>
+                    </ol>
+                </nav>
+                <a th:href="@{/admin/contact}" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-bold shadow-sm bg-white">
+                    <i class="bi bi-arrow-left me-1"></i> Quay lại
+                </a>
+            </div>
+
+            <!-- Detail Header -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary" style="width: 60px; height: 60px;">
+                    <i class="bi bi-person-fill fs-3 text-white"></i>
+                </div>
+                <div>
+                    <h4 class="fw-bolder mb-1 text-dark" th:text="${contact.name}"></h4>
+                    <p class="text-secondary small mb-0">
+                        <i class="bi bi-envelope me-1"></i> <span th:text="${contact.email}"></span> &bull; 
+                        <i class="bi bi-clock ms-2 me-1"></i> <span th:text="${#temporals.format(contact.createdAt,'dd/MM/yyyy HH:mm')}"></span>
+                    </p>
+                </div>
+                <div class="ms-auto d-flex gap-2">
+                    <div class="bg-white border rounded-pill px-4 py-2 shadow-sm d-flex align-items-center">
+                        <span class="text-uppercase small fw-bold text-muted me-2 border-end pe-2">Trạng thái</span>
+                        <span th:if="${contact.status == 'NEW'}" class="text-danger fw-bold"><i class="bi bi-record-circle-fill me-1"></i> Mới</span>
+                        <span th:if="${contact.status == 'READ'}" class="text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i> Đã tiếp nhận</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden bg-white">
+                <div class="card-body p-5">
+                    
+                    <div class="row g-5">
+                        
+                        <!-- Left Subject/Message Form -->
+                        <div class="col-lg-8 border-end pe-5">
+                            <h5 class="fw-bolder mb-4 text-dark"><i class="bi bi-journal-text me-2 text-primary"></i>Nội dung trao đổi</h5>
+                            
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-bold text-uppercase">Chủ đề chính</label>
+                                <div class="bg-light rounded-3 p-3 border fw-semibold text-dark fs-5" th:text="${contact.tittle}"></div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-bold text-uppercase">Nội dung chi tiết</label>
+                                <div class="bg-light rounded-3 p-4 border text-dark lh-lg" style="min-height: 180px; white-space: pre-wrap;" th:text="${contact.content}"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Sidebar Info -->
+                        <div class="col-lg-4 ps-lg-4">
+                            <h5 class="fw-bolder mb-4 text-dark"><i class="bi bi-info-square me-2 text-primary"></i>Thông tin hồ sơ</h5>
+                            
+                            <div class="d-flex flex-column gap-4">
+                                <div>
+                                    <span class="d-block text-muted small fw-bold text-uppercase mb-1">Loại yêu cầu</span>
+                                    <span class="badge rounded-pill border fw-bold text-dark px-3 py-2 bg-light w-100 text-start" th:if="${contact.type == 'TOUR'}"><i class="bi bi-map me-2 text-success"></i>Tư vấn Đặt Tour</span>
+                                    <span class="badge rounded-pill border fw-bold text-dark px-3 py-2 bg-light w-100 text-start" th:if="${contact.type == 'SUPPORT'}"><i class="bi bi-headset me-2 text-primary"></i>Hỗ trợ Chăm sóc</span>
+                                    <span class="badge rounded-pill border fw-bold text-dark px-3 py-2 bg-light w-100 text-start" th:if="${contact.type != 'TOUR' and contact.type != 'SUPPORT'}"><i class="bi bi-question-circle me-2 text-warning"></i>Nhu cầu khác</span>
+                                </div>
+                                
+                                <div>
+                                    <span class="d-block text-muted small fw-bold text-uppercase mb-1">Số điện thoại</span>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-telephone-fill text-muted me-2"></i>
+                                        <span class="fw-semibold text-dark" th:text="${contact.phone_number ?: 'Không cung cấp'}"></span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <span class="d-block text-muted small fw-bold text-uppercase mb-1">Địa chỉ</span>
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-geo-alt-fill text-muted me-2 mt-1"></i>
+                                        <span class="fw-semibold text-dark" th:text="${contact.address ?: 'Không cung cấp'}"></span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span class="d-block text-muted small fw-bold text-uppercase mb-1">Số khách dự kiến</span>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-people-fill text-muted me-2"></i>
+                                        <span class="fw-semibold text-dark" th:text="${contact.guest_number != null ? contact.guest_number + ' khách' : 'Chưa xác định'}"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout/admin_layout :: footer()}"></footer>
+</body>
+</html>

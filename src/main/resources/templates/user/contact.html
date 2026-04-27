@@ -1,0 +1,220 @@
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/layout :: layout(~{::section})">
+<section>
+    <style>
+        .contact-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 8rem 0 4rem 0;
+            border-radius: 0 0 3rem 3rem;
+            margin-top: -80px;
+        }
+
+        .contact-card-info {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            height: 100%;
+        }
+
+        .contact-form-glass {
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            padding: 3rem;
+        }
+
+        .contact-icon-box {
+            width: 50px;
+            height: 50px;
+            background: #f0f7ff;
+            color: #3498DB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info-item:hover .contact-icon-box {
+            background: #3498DB;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .minimal-input-border {
+            border: 2px solid #edf2f7;
+            background-color: #f8fafc;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            padding: 0.75rem 1rem;
+        }
+
+        .minimal-input-border:focus {
+            border-color: #3498DB;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+        }
+
+        .btn-luxury-gradient {
+            background: linear-gradient(135deg, #3498DB 0%, #2E86C1 100%);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-luxury-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(52, 152, 219, 0.4);
+            color: white;
+        }
+
+        .map-container {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+
+    <!-- Header Section -->
+    <div class="contact-header text-center">
+        <div class="container position-relative z-2">
+            <h1 class="display-4 fw-bolder text-white mb-3 tracking-tight">Liên hệ với chúng tôi</h1>
+            <p class="fs-5 text-light opacity-75 mx-auto" style="max-width: 600px;">Chúng tôi luôn sẵn sàng lắng nghe và
+                hỗ trợ mọi nhu cầu để bạn có một kỳ nghỉ thật hoàn hảo.</p>
+        </div>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="container" style="margin-top: -40px; margin-bottom: 80px; position: relative; z-index: 5;">
+        <div class="row g-5">
+            <!-- Left Side: Information & Map -->
+            <div class="col-lg-5">
+                <div class="contact-card-info">
+                    <h3 class="fw-bolder text-dark mb-4 pb-2 border-bottom">Thông tin liên hệ</h3>
+
+                    <div class="d-flex flex-column gap-4 mb-5">
+                        <!-- Info Item -->
+                        <div class="d-flex align-items-center gap-3 contact-info-item">
+                            <div class="contact-icon-box"><i class="bi bi-geo-alt-fill"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-1 text-dark">Trụ sở chính</h6>
+                                <p class="mb-0 text-secondary small">Tòa nhà ZakiBooking, 123 Đường Du Lịch, Quận 1, TP.
+                                    Hồ Chí Minh</p>
+                            </div>
+                        </div>
+
+                        <!-- Info Item -->
+                        <div class="d-flex align-items-center gap-3 contact-info-item">
+                            <div class="contact-icon-box"><i class="bi bi-telephone-fill"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-1 text-dark">Hotline hỗ trợ (24/7)</h6>
+                                <p class="mb-0 text-secondary small fw-bold text-primary">1900 1234</p>
+                            </div>
+                        </div>
+
+                        <!-- Info Item -->
+                        <div class="d-flex align-items-center gap-3 contact-info-item">
+                            <div class="contact-icon-box"><i class="bi bi-envelope-fill"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-1 text-dark">Email liên hệ</h6>
+                                <p class="mb-0 text-secondary small">contact@zakibooking.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Form -->
+            <div class="col-lg-7">
+                <div class="contact-form-glass h-100">
+                    <h3 class="fw-bolder text-dark mb-2">Gửi tin nhắn cho chúng tôi</h3>
+                    <p class="text-secondary small mb-4 pb-3 border-bottom">Đội ngũ của chúng tôi sẽ phản hồi bạn trong
+                        vòng 24 giờ làm việc.</p>
+
+                    <div th:if="${success}"
+                        class="alert alert-success rounded-3 shadow-sm border-0 d-flex align-items-center mb-4">
+                        <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
+                        <div>
+                            <h6 class="alert-heading fw-bold mb-1">Gửi thông tin thành công!</h6>
+                            <p class="mb-0 small">Cảm ơn bạn đã liên hệ. Chúng tôi sẽ sớm kết nối với bạn.</p>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/contact}" th:object="${contact}" method="post" autocomplete="off">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary fw-semibold small">Họ và tên <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control minimal-input-border" th:field="*{name}"
+                                    placeholder="Nguyễn Văn A" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary fw-semibold small">Trang thái Email <span
+                                        class="text-danger">*</span></label>
+                                <input type="email" class="form-control minimal-input-border" th:field="*{email}"
+                                    placeholder="example@email.com" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary fw-semibold small">Số điện thoại</label>
+                                <input type="text" class="form-control minimal-input-border" th:field="*{phone_number}"
+                                    placeholder="0912 345 678">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary fw-semibold small">Loại nhu cầu liên hệ</label>
+                                <select class="form-select minimal-input-border" th:field="*{type}">
+                                    <option value="TOUR">Tư vấn Du lịch / Đặt Tour</option>
+                                    <option value="SUPPORT">Chăm sóc khách hàng</option>
+                                    <option value="OTHER">Thắc mắc khác</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label class="form-label text-secondary fw-semibold small">Địa chỉ của bạn</label>
+                                <input type="text" class="form-control minimal-input-border" th:field="*{address}"
+                                    placeholder="Quận/Huyện, Tỉnh/Thành phố">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-secondary fw-semibold small">Số khách dự kiến</label>
+                                <input type="number" class="form-control minimal-input-border"
+                                    th:field="*{guest_number}" placeholder="Vd: 2" min="1">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-secondary fw-semibold small">Tiêu đề <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control minimal-input-border" th:field="*{tittle}"
+                                    placeholder="Nhập tiêu đề cần hỗ trợ" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-secondary fw-semibold small">Nội dung chi tiết <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control minimal-input-border" rows="5" th:field="*{content}"
+                                    placeholder="Hãy chia sẻ mong muốn của bạn..." required></textarea>
+                            </div>
+
+                            <div class="col-12 text-end mt-4">
+                                <button type="submit"
+                                    class="btn btn-luxury-gradient rounded-pill px-5 py-3 fw-bold fs-6">
+                                    <i class="bi bi-send-fill me-2"></i> Gửi Yêu Cầu
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</html>
