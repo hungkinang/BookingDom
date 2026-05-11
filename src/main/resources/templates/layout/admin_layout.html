@@ -164,7 +164,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       transition: all 0.3s;
       background-color: #ffffff;
       padding: 0 15px;
@@ -266,13 +266,13 @@
   </section>
 </header>
 <nav th:fragment="nav()" class="admin-sidebar border-end bg-white py-4 d-flex flex-column">
-  
+
   <div class="px-4 mb-3 text-uppercase fw-bold text-muted" style="font-size: 0.75rem; letter-spacing: 1px;">
     Thống kê & Báo cáo
   </div>
   <ul class="nav flex-column mb-4">
     <li class="nav-item">
-      <a class="nav-link" th:href="@{/admin}">
+      <a class="nav-link" th:href="@{#}">
         <i class="bi bi-grid-1x2-fill me-2"></i> Tổng quan Dashboard
       </a>
     </li>
@@ -287,9 +287,10 @@
         <i class="bi bi-people-fill me-2"></i> Người dùng
       </a>
     </li>
-    
+
     <li class="nav-item">
-      <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#tourMenu" role="button" aria-expanded="false" aria-controls="tourMenu">
+      <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#tourMenu"
+        role="button" aria-expanded="false" aria-controls="tourMenu">
         <div>
           <i class="bi bi-luggage-fill me-2"></i> Điều hành Tour
         </div>
@@ -299,7 +300,7 @@
         <ul class="nav flex-column mt-2">
           <li class="nav-item">
             <a class="nav-link py-2" th:href="@{/admin/tour/active}" style="font-size: 0.9rem;">
-              <i class="bi bi-record-circle text-primary me-2"></i> Đang mở bán
+              <i class="bi bi-record-circle text-primary me-2"></i> Đang hoạt động
             </a>
           </li>
           <li class="nav-item">
@@ -317,12 +318,12 @@
   </div>
   <ul class="nav flex-column pb-4 mb-auto">
     <li class="nav-item">
-      <a class="nav-link position-relative" th:href="@{/admin/contact}">
+      <a class="nav-link position-relative" th:href="@{#}">
         <i class="bi bi-envelope-paper-fill me-2"></i> Hòm thư liên hệ
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" th:href="@{/admin/danh-gia}">
+      <a class="nav-link" th:href="@{#}">
         <i class="bi bi-star-fill me-2 text-warning"></i> Quản lý Đánh giá
       </a>
     </li>
@@ -340,20 +341,16 @@
 
   <script>
     (function () {
-
       // === Active Sidebar Link ===
       const path = window.location.pathname;
       document.querySelectorAll('.admin-sidebar .nav-link').forEach(function (link) {
         const href = link.getAttribute('href');
         if (!href) return;
-        // Exact match for /admin (dashboard)
         if (href === '/admin' && path === '/admin') {
           link.classList.add('active');
         }
-        // Prefix match for other pages (e.g. /admin/user, /admin/tour/active)
         else if (href !== '/admin' && path.startsWith(href)) {
           link.classList.add('active');
-          // Auto-expand parent collapse if inside a submenu
           var collapse = link.closest('.collapse');
           if (collapse) {
             collapse.classList.add('show');
