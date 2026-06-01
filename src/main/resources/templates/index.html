@@ -1,147 +1,403 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout/layout :: layout(~{::section})">
 <section>
     <style>
-        /* Luxury overrides exclusively for index */
-        .hero-section {
-            min-height: 85vh !important;
-            border-radius: 0 0 3rem 3rem;
-            margin-top: -80px;
-            padding-top: 120px;
+        /* RESET */
+        main {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
         }
 
+        /* ================= HERO ================= */
+
+        .hero-section {
+            padding-top: 10px;
+            padding-bottom: 0;
+
+            min-height: 320px;
+            /* giảm mạnh chiều cao */
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(135deg,
+                    #eaf7ff 0%,
+                    #dff4ff 50%,
+                    #f5fbff 100%);
+        }
+
+        .hero-content {
+            margin-top: -60px;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 900;
+
+            line-height: 1.05;
+            letter-spacing: -3px;
+
+            max-width: 1450px;
+            margin: 0 auto 1.5rem;
+
+            background:
+                linear-gradient(90deg,
+                    #111827 0%,
+                    #0f172a 55%,
+                    #0369a1 100%);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            text-shadow: none;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: #6b7280;
+
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        /* ================= BACKGROUND BLUR ================= */
+
+        .hero-blur {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* ================= SEARCH ================= */
+
         .glass-search-card {
-            background: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5) !important;
-            border-radius: 1.5rem !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important;
-            transform: translateY(-50%);
-            margin-bottom: -100px;
+            background: rgba(255, 255, 255, 0.97) !important;
+
+            backdrop-filter: blur(10px);
+
+            border-radius: 2rem !important;
+
+            padding: 2rem !important;
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.06) !important;
+
+            border: 1px solid rgba(255, 255, 255, 0.7);
+
+            max-width: 1180px;
+
+            margin-left: auto;
+            margin-right: auto;
+
+            /* search gần hero hơn */
+            transform: translateY(-18%);
+
+            margin-bottom: -20px;
         }
 
         .minimal-input {
-            background: rgba(255, 255, 255, 0.7) !important;
-            border: 1px solid transparent !important;
+            background: #f3f4f6 !important;
+
+            border: none !important;
+
+            border-radius: 16px !important;
+
+            height: 58px;
+
             transition: all 0.3s ease;
+
+            font-weight: 500;
         }
 
         .minimal-input:focus {
-            background: #fff !important;
-            border-color: #3498DB !important;
-            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2) !important;
+            background: #ffffff !important;
+
+            box-shadow:
+                0 0 0 4px rgba(52, 152, 219, 0.12) !important;
         }
+
+        .form-label {
+            margin-bottom: 10px !important;
+
+            font-size: 0.78rem;
+
+            letter-spacing: 1px;
+
+            color: #64748b;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .btn-luxury-primary {
+            background:
+                linear-gradient(135deg,
+                    #1E88E5 0%,
+                    #00BCD4 100%) !important;
+
+            border: none !important;
+
+            color: white !important;
+
+            height: 58px;
+
+            border-radius: 18px !important;
+
+            font-weight: 800;
+
+            transition: 0.3s ease;
+
+            box-shadow:
+                0 8px 20px rgba(30, 136, 229, 0.25) !important;
+        }
+
+        .btn-luxury-primary:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 15px 35px rgba(30, 136, 229, 0.35) !important;
+        }
+
+        /* ================= CARD ================= */
 
         .luxury-card {
             border-radius: 1.5rem !important;
+
             overflow: hidden;
+
             border: none !important;
+
             background: #fff;
+
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         .luxury-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         .portrait-img-box {
             height: 480px;
-            /* Taller destination cards */
+
             position: relative;
         }
 
         .gradient-dark-bottom {
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
-        }
-
-        .btn-luxury-primary {
-            background: linear-gradient(135deg, #3498DB 0%, #2E86C1 100%) !important;
-            border: none !important;
-            color: #fff !important;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .btn-luxury-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
-            color: #fff !important;
+            background:
+                linear-gradient(to top,
+                    rgba(0, 0, 0, 0.9) 0%,
+                    rgba(0, 0, 0, 0.3) 50%,
+                    transparent 100%);
         }
 
         .tour-badge-luxury {
             background: rgba(255, 255, 255, 0.95);
+
             backdrop-filter: blur(4px);
+
             color: #c0392b !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 1200px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+        }
+
+        @media(max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+                letter-spacing: -1px;
+            }
+
+            .glass-search-card {
+                transform: translateY(-35%);
+            }
+        }
+
+        @media(max-width: 768px) {
+            .hero-section {
+                min-height: auto;
+                padding-top: 40px;
+                padding-bottom: 30px;
+            }
+
+            .hero-title {
+                font-size: 2.3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .glass-search-card {
+                padding: 1.5rem !important;
+                transform: translateY(0);
+                margin-bottom: 0;
+            }
         }
     </style>
 
-    <!-- HERO SECTION (GRAND ENTRANCE) -->
-    <header class="hero-section text-white d-flex align-items-center justify-content-center position-relative">
-        <div class="hero-overlay" style="border-radius: 0 0 3rem 3rem;"></div>
-        <div class="container text-center hero-content position-relative z-2" style="margin-top: -50px;">
-            <h1 class="fw-bolder display-3 mb-4 text-white text-shadow-sm tracking-tight">Hành trình tuyệt mỹ<br>đang
-                chờ đón bạn</h1>
-            <p class="lead fw-medium mb-5 text-light text-shadow-sm fs-5" style="max-width: 650px; margin: 0 auto;">Khám
-                phá các kỳ quan và văn hóa thế giới cùng nền tảng đặt tour cao cấp ZakiBooking</p>
+    <!-- HERO -->
+    <header class="hero-section position-relative">
+
+        <!-- blur -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 hero-blur">
+
+            <div class="position-absolute rounded-circle" style="
+                    background: radial-gradient(circle, #38bdf8 0%, transparent 70%);
+                    width: 400px;
+                    height: 400px;
+                    top: -100px;
+                    left: -100px;
+                    filter: blur(40px);
+                ">
+            </div>
+
+            <div class="position-absolute rounded-circle" style="
+                    background: radial-gradient(circle, #818cf8 0%, transparent 70%);
+                    width: 350px;
+                    height: 350px;
+                    bottom: 0;
+                    right: 5%;
+                    filter: blur(40px);
+                ">
+            </div>
+
         </div>
+
+        <div class="container text-center hero-content position-relative z-2">
+
+            <h1 class="hero-title">
+                Hành Trình Tuyệt Mỹ Đang Chờ Đón Bạn
+            </h1>
+
+            <p class="hero-subtitle">
+                Mở ra cánh cửa đến với những kỳ quan tuyệt mỹ.
+                Trải nghiệm dịch vụ du lịch cao cấp,
+                được thiết kế riêng biệt để mang lại cho bạn
+                những kỷ niệm khó quên.
+            </p>
+
+        </div>
+
     </header>
 
-    <!-- FLOATING SEARCH BAR (GLASSMORPHISM) -->
+    <!-- SEARCH -->
     <section class="position-relative z-3">
+
         <div class="container">
-            <div class="glass-search-card p-4 p-md-5">
+
+            <div class="glass-search-card">
+
                 <form method="GET" th:action="@{/tour}" autocomplete="off" class="m-0">
+
                     <div class="row g-4 align-items-end">
+
+                        <!-- destination -->
                         <div class="col-md-4">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase tracking-wider mb-2"
-                                style="color: #4a5568 !important;">Điểm đến</label>
+
+                            <label class="form-label fw-bolder text-uppercase ms-2">
+                                Bạn muốn đi đâu?
+                            </label>
+
                             <div class="input-group">
-                                <span class="input-group-text minimal-input border-end-0 bg-transparent text-primary"><i
-                                        class="bi bi-geo-alt"></i></span>
+
+                                <span class="input-group-text minimal-input border-end-0 text-primary ps-4">
+                                    <i class="bi bi-geo-alt-fill fs-5"></i>
+                                </span>
+
                                 <input type="text"
-                                    class="form-control form-control-lg minimal-input border-start-0 px-2"
-                                    name="diemDen" placeholder="Bạn muốn đến đâu?" />
+                                    class="form-control form-control-lg minimal-input border-start-0 px-2 shadow-none"
+                                    name="diemDen" placeholder="ví dụ: Đà Nẵng, Phú Quốc..." />
+
                             </div>
+
                         </div>
+
+                        <!-- date -->
                         <div class="col-md-3">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase tracking-wider mb-2"
-                                style="color: #4a5568 !important;">Ngày khởi hành</label>
+
+                            <label class="form-label fw-bolder text-uppercase ms-2">
+                                Ngày đi
+                            </label>
+
                             <div class="input-group">
-                                <span class="input-group-text minimal-input border-end-0 bg-transparent text-primary"><i
-                                        class="bi bi-calendar-event"></i></span>
+
+                                <span class="input-group-text minimal-input border-end-0 text-primary ps-4">
+                                    <i class="bi bi-calendar-event-fill fs-5"></i>
+                                </span>
+
                                 <input type="date"
-                                    class="form-control form-control-lg minimal-input border-start-0 px-2" name="ngayDi"
-                                    id="ngayDi" th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+                                    class="form-control form-control-lg minimal-input border-start-0 px-2 shadow-none text-secondary"
+                                    name="ngayDi" id="ngayDi"
+                                    th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+
                             </div>
+
                         </div>
+
+                        <!-- price -->
                         <div class="col-md-3">
-                            <label class="form-label fw-bold text-slate-700 small text-uppercase tracking-wider mb-2"
-                                style="color: #4a5568 !important;">Ngân sách</label>
+
+                            <label class="form-label fw-bolder text-uppercase ms-2">
+                                Khoảng giá
+                            </label>
+
                             <div class="input-group">
-                                <span class="input-group-text minimal-input border-end-0 bg-transparent text-primary"><i
-                                        class="bi bi-wallet2"></i></span>
-                                <select class="form-select form-select-lg minimal-input border-start-0 px-2"
+
+                                <span class="input-group-text minimal-input border-end-0 text-primary ps-4">
+                                    <i class="bi bi-tag-fill fs-5"></i>
+                                </span>
+
+                                <select
+                                    class="form-select form-select-lg minimal-input border-start-0 px-2 shadow-none text-secondary"
                                     name="khoangGia">
+
                                     <option value="">Tất cả mức giá</option>
                                     <option value="DUOI5">Dưới 5 triệu</option>
                                     <option value="5_10">5 - 10 triệu</option>
                                     <option value="TREN10">Trên 10 triệu</option>
+
                                 </select>
+
                             </div>
+
                         </div>
+
+                        <!-- button -->
                         <div class="col-md-2">
-                            <button type="submit"
-                                class="btn btn-luxury-primary btn-lg w-100 rounded-pill fw-bolder fs-5 text-white">
+
+                            <button type="submit" class="btn btn-luxury-primary btn-lg w-100 text-uppercase">
+
                                 Tìm kiếm
+
                             </button>
+
                         </div>
+
                     </div>
+
                 </form>
+
             </div>
+
         </div>
+
     </section>
 
     <!-- DESTINATIONS SECTION (PREMIUM GRID) -->
@@ -206,7 +462,9 @@
                         <div class="p-4 flex-grow-1 d-flex flex-column bg-white">
                             <div class="d-flex align-items-center mb-2">
                                 <div class="text-warning mb-1" style="color: #FFC107 !important;">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                        class="bi bi-star-fill"></i>
                                 </div>
                                 <span class="ms-2 text-secondary small fw-medium">Tuyệt hảo</span>
                             </div>
@@ -224,7 +482,8 @@
                                 <a th:href="@{/tour/{id}(id=${ds.id})}"
                                     class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 45px; height: 45px; border-width: 2px; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"
-                                    onmouseover="this.style.background='#212529'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#212529';">
+                                    onmouseover="this.style.background='#212529'; this.style.color='white';"
+                                    onmouseout="this.style.background='transparent'; this.style.color='#212529';">
                                     <i class="bi bi-arrow-right fs-5"></i>
                                 </a>
                             </div>
@@ -237,7 +496,7 @@
                 <a th:href="@{/tour}"
                     class="btn btn-outline-dark btn-lg rounded-pill fw-bold px-5 py-3 shadow-sm hover-elevate transition-all"
                     style="border-width: 2px;"
-                    onmouseover="this.style.background='#212529'; this.style.color='white'; this.style.transform='translateY(-3px)';" 
+                    onmouseover="this.style.background='#212529'; this.style.color='white'; this.style.transform='translateY(-3px)';"
                     onmouseout="this.style.background='transparent'; this.style.color='#212529'; this.style.transform='translateY(0)';">
                     Xem toàn bộ bộ sưu tập <i class="bi bi-arrow-right ms-2"></i>
                 </a>
@@ -275,7 +534,9 @@
                                 <h5 class="fw-bold text-dark mb-1 tracking-widest text-uppercase text-sm"
                                     th:text="${dsdg.idNguoiDung.hoTen}"></h5>
                                 <div class="text-warning small mb-2" style="color: #FFC107 !important;">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                        class="bi bi-star-fill"></i>
                                 </div>
                                 <p class="small text-secondary mb-0">Tour: <a
                                         th:href="@{/tour/{id}(id=${dsdg.idChuyenDi.id})}"

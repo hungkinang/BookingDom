@@ -93,7 +93,7 @@ public class AuthController {
 
         // Kiểm tra vai trò và chuyển hướng tương ứng
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-            return "redirect:/admin/user";
+            return "redirect:/admin";
         } else {
             return "redirect:/";
         }

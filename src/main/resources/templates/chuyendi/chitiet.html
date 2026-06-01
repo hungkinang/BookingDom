@@ -211,39 +211,209 @@
                     <hr>
 
                     <!-- ===== ĐÁNH GIÁ ===== -->
-                    <div class="mt-4">
-                        <h3 class="h5 fw-bold mb-3">ĐÁNH GIÁ CỦA KHÁCH HÀNG</h3>
-                        <div class="mb-3 d-flex align-items-center gap-3">
-                            <div class="fs-4 text-warning">
-                                <th:block th:each="i : ${#numbers.sequence(1,5)}">
-                                    <i class="bi" th:classappend="${i <= avgRating} ? 'bi-star-fill' : 'bi-star'"></i>
-                                </th:block>
-                            </div>
-                            <div>
-                                <strong th:text="${avgRating} + '/5'"></strong>
-                                <span class="text-muted small">(<span th:text="${totalReview}"></span> đánh
-                                    giá)</span>
-                            </div>
+                    <div class="mt-5 premium-reviews-section">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <h3 class="h4 fw-bold mb-0 text-dark">Đánh giá từ khách hàng</h3>
+                            <span
+                                class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-semibold text-muted small">
+                                <i class="bi bi-chat-left-text me-2 text-primary"></i><span
+                                    th:text="${totalReview}">0</span> đánh giá
+                            </span>
                         </div>
-                        <div class="card shadow-sm border-0 mb-3">
-                            <div class="card-body">
-                                <div th:if="${#lists.isEmpty(danhGiaList)}" class="text-muted text-center py-3">
-                                    Chưa có đánh giá nào cho chuyến đi này.
-                                </div>
-                                <div th:each="dg : ${danhGiaList}" class="border-bottom pb-3 mb-3">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <strong th:text="${dg.idNguoiDung.hoTen}"></strong>
-                                            <span class="text-warning ms-2" th:text="${dg.diem + ' ⭐'}"></span>
+
+                        <!-- Nếu chưa có đánh giá nào -->
+                        <div th:if="${#lists.isEmpty(danhGiaList)}"
+                            class="text-center py-5 bg-white rounded-4 shadow-sm border mb-4">
+                            <div class="display-5 text-muted mb-3"><i class="bi bi-chat-square-text"></i></div>
+                            <p class="text-muted fw-semibold">Chưa có đánh giá nào cho chuyến đi này.</p>
+                            <p class="small text-muted mb-0">Những người đã đi tour này sẽ chia sẻ đánh giá của họ tại
+                                đây.</p>
+                        </div>
+
+                        <!-- Nếu đã có đánh giá -->
+                        <div th:if="${not #lists.isEmpty(danhGiaList)}">
+
+                            <!-- Bảng Tổng Quan (Review Overview Breakdown) -->
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 reviews-overview-card">
+                                <div class="card-body p-4 p-md-5">
+                                    <div class="row g-4 align-items-center">
+                                        <!-- Điểm trung bình lớn -->
+                                        <div class="col-md-4 text-center border-end-md py-2">
+                                            <div class="rating-huge-wrapper mb-2">
+                                                <span class="rating-huge-number" th:text="${avgRating}">0.0</span>
+                                                <span class="rating-huge-max">/5</span>
+                                            </div>
+                                            <div class="fs-5 text-warning mb-2 justify-content-center d-flex gap-1">
+                                                <th:block th:each="i : ${#numbers.sequence(1,5)}">
+                                                    <i class="bi"
+                                                        th:classappend="${i <= avgRating} ? 'bi-star-fill' : 'bi-star'"></i>
+                                                </th:block>
+                                            </div>
+                                            <p class="small text-muted mb-0">Dựa trên <strong class="text-dark"
+                                                    th:text="${totalReview}">0</strong> đánh giá thực tế</p>
                                         </div>
-                                        <small class="text-muted"
-                                            th:text="${#temporals.format(dg.ngayDanhGia,'dd/MM/yyyy HH:mm')}">
-                                        </small>
+
+                                        <!-- Các thanh phân phối tỉ lệ sao -->
+                                        <div class="col-md-8 px-md-4">
+                                            <h6 class="fw-bold mb-3 text-dark small text-uppercase tracking-wider">Phân
+                                                bổ điểm số</h6>
+                                            <div class="d-flex flex-column gap-2" id="ratingBreakdownBars">
+                                                <!-- Thanh 5 sao -->
+                                                <div class="d-flex align-items-center gap-3 star-row" data-star="5">
+                                                    <span class="small text-muted fw-semibold" style="width: 50px;">5
+                                                        sao</span>
+                                                    <div class="progress flex-grow-1 rounded-pill"
+                                                        style="height: 8px; background-color: #f1f5f9;">
+                                                        <div class="progress-bar rounded-pill bg-warning"
+                                                            role="progressbar" style="width: 0%" aria-valuenow="0"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <span class="small text-muted fw-bold star-count-label"
+                                                        style="width: 40px; text-align: right;">0%</span>
+                                                </div>
+                                                <!-- Thanh 4 sao -->
+                                                <div class="d-flex align-items-center gap-3 star-row" data-star="4">
+                                                    <span class="small text-muted fw-semibold" style="width: 50px;">4
+                                                        sao</span>
+                                                    <div class="progress flex-grow-1 rounded-pill"
+                                                        style="height: 8px; background-color: #f1f5f9;">
+                                                        <div class="progress-bar rounded-pill bg-warning"
+                                                            role="progressbar" style="width: 0%" aria-valuenow="0"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <span class="small text-muted fw-bold star-count-label"
+                                                        style="width: 40px; text-align: right;">0%</span>
+                                                </div>
+                                                <!-- Thanh 3 sao -->
+                                                <div class="d-flex align-items-center gap-3 star-row" data-star="3">
+                                                    <span class="small text-muted fw-semibold" style="width: 50px;">3
+                                                        sao</span>
+                                                    <div class="progress flex-grow-1 rounded-pill"
+                                                        style="height: 8px; background-color: #f1f5f9;">
+                                                        <div class="progress-bar rounded-pill bg-warning"
+                                                            role="progressbar" style="width: 0%" aria-valuenow="0"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <span class="small text-muted fw-bold star-count-label"
+                                                        style="width: 40px; text-align: right;">0%</span>
+                                                </div>
+                                                <!-- Thanh 2 sao -->
+                                                <div class="d-flex align-items-center gap-3 star-row" data-star="2">
+                                                    <span class="small text-muted fw-semibold" style="width: 50px;">2
+                                                        sao</span>
+                                                    <div class="progress flex-grow-1 rounded-pill"
+                                                        style="height: 8px; background-color: #f1f5f9;">
+                                                        <div class="progress-bar rounded-pill bg-warning"
+                                                            role="progressbar" style="width: 0%" aria-valuenow="0"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <span class="small text-muted fw-bold star-count-label"
+                                                        style="width: 40px; text-align: right;">0%</span>
+                                                </div>
+                                                <!-- Thanh 1 sao -->
+                                                <div class="d-flex align-items-center gap-3 star-row" data-star="1">
+                                                    <span class="small text-muted fw-semibold" style="width: 50px;">1
+                                                        sao</span>
+                                                    <div class="progress flex-grow-1 rounded-pill"
+                                                        style="height: 8px; background-color: #f1f5f9;">
+                                                        <div class="progress-bar rounded-pill bg-warning"
+                                                            role="progressbar" style="width: 0%" aria-valuenow="0"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <span class="small text-muted fw-bold star-count-label"
+                                                        style="width: 40px; text-align: right;">0%</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p class="mb-0 mt-2 text-muted" th:text="${dg.binhLuan}">
+                                </div>
+                            </div>
+
+                            <!-- Bộ Lọc Đánh Giá (Review Star Filters) -->
+                            <div class="d-flex flex-wrap gap-2 mb-4 justify-content-start align-items-center">
+                                <span class="small text-muted fw-bold me-2"><i
+                                        class="bi bi-funnel-fill me-1 text-primary"></i>Lọc theo:</span>
+                                <button type="button" class="btn btn-sm btn-filter-pill active" data-filter="all">
+                                    Tất cả (<span th:text="${totalReview}">0</span>)
+                                </button>
+                                <button type="button" class="btn btn-sm btn-filter-pill" data-filter="5">
+                                    5 <i class="bi bi-star-fill text-warning ms-1"></i> (<span class="filter-count"
+                                        data-count-star="5">0</span>)
+                                </button>
+                                <button type="button" class="btn btn-sm btn-filter-pill" data-filter="4">
+                                    4 <i class="bi bi-star-fill text-warning ms-1"></i> (<span class="filter-count"
+                                        data-count-star="4">0</span>)
+                                </button>
+                                <button type="button" class="btn btn-sm btn-filter-pill" data-filter="3">
+                                    3 <i class="bi bi-star-fill text-warning ms-1"></i> (<span class="filter-count"
+                                        data-count-star="3">0</span>)
+                                </button>
+                                <button type="button" class="btn btn-sm btn-filter-pill" data-filter="2">
+                                    2 <i class="bi bi-star-fill text-warning ms-1"></i> (<span class="filter-count"
+                                        data-count-star="2">0</span>)
+                                </button>
+                                <button type="button" class="btn btn-sm btn-filter-pill" data-filter="1">
+                                    1 <i class="bi bi-star-fill text-warning ms-1"></i> (<span class="filter-count"
+                                        data-count-star="1">0</span>)
+                                </button>
+                            </div>
+
+                            <!-- Danh Sách Bình Luận (Review Comments Cards List) -->
+                            <div class="reviews-list-container d-flex flex-column gap-3 mb-4" id="reviewsList">
+                                <div th:each="dg : ${danhGiaList}"
+                                    class="card border-0 shadow-sm rounded-4 review-card-premium"
+                                    th:data-rating="${dg.diem}" style="transition: all 0.25s ease;">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-start gap-3">
+                                            <!-- Avatar với màu gradient dịu đẹp mắt -->
+                                            <div class="avatar-circle-gradient d-flex align-items-center justify-content-center text-white fw-bold shadow-sm"
+                                                th:text="${(dg.idNguoiDung.hoTen != null and #strings.length(dg.idNguoiDung.hoTen) > 0) ? #strings.substring(dg.idNguoiDung.hoTen,0,1).toUpperCase() : '?'}">
+                                            </div>
+                                            <!-- Chi tiết bình luận -->
+                                            <div class="flex-grow-1">
+                                                <div
+                                                    class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between mb-2">
+                                                    <div>
+                                                        <h6 class="fw-bold mb-1 text-dark"
+                                                            th:text="${dg.idNguoiDung.hoTen}">Người dùng</h6>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <div class="text-warning small d-flex gap-0.5">
+                                                                <th:block th:each="i : ${#numbers.sequence(1,5)}">
+                                                                    <i class="bi"
+                                                                        th:classappend="${i <= dg.diem} ? 'bi-star-fill' : 'bi-star'"></i>
+                                                                </th:block>
+                                                            </div>
+                                                            <!-- Huy hiệu đánh giá -->
+                                                            <span
+                                                                th:class="'badge rounded-pill badge-rating-tag rating-' + ${dg.diem}"
+                                                                th:text="${dg.diem == 5 ? 'Tuyệt vời' : (dg.diem == 4 ? 'Rất tốt' : (dg.diem == 3 ? 'Bình thường' : (dg.diem == 2 ? 'Kém' : 'Tồi tệ')))}">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <span
+                                                        class="text-muted small mt-2 mt-sm-0 bg-light px-2.5 py-1 rounded"
+                                                        style="font-size: 0.8rem;">
+                                                        <i class="bi bi-clock me-1"></i><span
+                                                            th:text="${#temporals.format(dg.ngayDanhGia,'dd/MM/yyyy HH:mm')}">Thời
+                                                            gian</span>
+                                                    </span>
+                                                </div>
+                                                <p class="mb-0 mt-2 text-muted review-text" th:text="${dg.binhLuan}">Nội
+                                                    dung đánh giá...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Empty Filter Result State -->
+                                <div id="emptyFilterState"
+                                    class="text-center py-5 bg-white rounded-4 shadow-sm border d-none">
+                                    <div class="display-6 text-muted mb-3"><i class="bi bi-chat-square-dots"></i></div>
+                                    <p class="text-muted fw-semibold mb-0">Không tìm thấy đánh giá nào có mức điểm này.
                                     </p>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <!--Đánh giá-->
@@ -362,37 +532,82 @@
                         </div>
                     </div>
 
-                    <h3 class="h5 fw-bold text-center mb-4">LỊCH TRÌNH</h3>
-                    <div th:if="${#lists.isEmpty(lichTrinhs)}" class="text-center py-5 schedule-empty">
-                        <i class="bi bi-calendar-x fs-1 mb-3"></i>
-                        <p class="mb-0">Tạm thời chưa có lịch trình cho chuyến đi này</p>
-                    </div>
+                    <!-- ===== LỊCH TRÌNH PREMIUM ===== -->
+                    <div class="tour-schedule-premium mt-5">
+                        <div class="schedule-header mb-4">
+                            <h3 class="fw-bolder schedule-title">Lịch Trình</h3>
+                        </div>
 
-                    <div class="accordion" id="tourSchedule" th:if="${!#lists.isEmpty(lichTrinhs)}">
-                        <div class="accordion-item schedule-item" th:each="lich,iter : ${lichTrinhs}">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    th:attr="data-bs-target='#day' + ${lich.ngayThu}">
-                                    <div class="w-100">
-                                        <div class="fw-bold">
-                                            Ngày [[${lich.ngayThu}]]: [[${lich.tieuDe}]]
-                                        </div>
-                                        <div class="small schedule-meal mt-1">
-                                            <i class="bi bi-cup-hot me-1"></i>
-                                            [[${lich.soBuaAn}]]
+                        <div th:if="${#lists.isEmpty(lichTrinhs)}" class="text-center py-5 schedule-empty">
+                            <i class="bi bi-calendar-x fs-1 mb-3 text-muted"></i>
+                            <p class="mb-0 text-muted">Tạm thời chưa có lịch trình cho chuyến đi này</p>
+                        </div>
+
+                        <!-- Compact List -->
+                        <div class="schedule-compact-list glass-card p-0" th:if="${!#lists.isEmpty(lichTrinhs)}">
+                            <div th:each="lich,iter : ${lichTrinhs}" class="compact-day-item" data-bs-toggle="modal"
+                                data-bs-target="#modalFullSchedule">
+
+                                <div class="d-flex align-items-center justify-content-between w-100">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="day-badge-compact">Ngày [[${lich.ngayThu}]]</div>
+                                        <div>
+                                            <h4 class="compact-title mb-1 text-dark">[[${lich.tieuDe}]]</h4>
+                                            <div class="compact-meta text-muted small">
+                                                <i class="bi bi-cup-hot-fill text-warning me-1"></i> Ăn:
+                                                [[${lich.soBuaAn}]]
+                                            </div>
                                         </div>
                                     </div>
-                                </button>
-                            </h2>
+                                    <div class="arrow-icon text-muted">
+                                        <i class="bi bi-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="accordion-collapse collapse" th:id="'day' + ${lich.ngayThu}">
-                                <div class="accordion-body">
-                                    <div class="schedule-line">
-                                        <div class="schedule-content">
-                                            <p th:text="${lich.noiDung}"></p>
-                                            <p class="fw-bold mt-3">
-                                                Nghỉ đêm tại [[${lich.nghiDem}]]
-                                            </p>
+                        <!-- Single Modal for Full Schedule -->
+                        <div class="modal fade premium-modal" id="modalFullSchedule" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                                <div class="modal-content border-0">
+                                    <div class="modal-header border-0 pb-0 pt-4 px-4 px-md-5">
+                                        <h3 class="modal-title fw-bold fs-4">Lịch trình</h3>
+                                        <button type="button" class="btn-close-custom" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body px-4 px-md-5 pb-5 pt-4">
+                                        <div class="timeline-detail-container">
+                                            <div class="timeline-detail-line"></div>
+
+                                            <div class="timeline-detail-item" th:each="lich,iter : ${lichTrinhs}">
+                                                <!-- Marker dot -->
+                                                <div class="timeline-detail-dot">
+                                                    <i class="bi bi-geo-alt-fill"></i>
+                                                </div>
+
+                                                <!-- Blue Header Card -->
+                                                <div class="day-header-card">
+                                                    <div class="day-badge-text mb-2">Ngày [[${lich.ngayThu}]]</div>
+                                                    <h4 class="fw-bold text-dark mb-2 fs-5">[[${lich.tieuDe}]]</h4>
+                                                    <div class="text-muted small fw-medium">
+                                                        <i class="bi bi-cup-hot-fill me-1 text-secondary"></i>
+                                                        [[${lich.soBuaAn}]]
+                                                    </div>
+                                                </div>
+
+                                                <!-- White Content Card -->
+                                                <div class="day-content-card mt-3">
+                                                    <p class="fw-bold mb-2 text-dark">Nghỉ đêm: <span
+                                                            class="fw-normal text-secondary">[[${lich.nghiDem}]]</span>
+                                                    </p>
+                                                    <div class="text-secondary schedule-details"
+                                                        th:utext="${#strings.replace(lich.noiDung, '&#10;', '<br>')}">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -634,6 +849,114 @@
                 if (code >= 95) return '<i class="bi bi-cloud-lightning-rain text-danger"></i>';
                 return '<i class="bi bi-cloud text-secondary"></i>';
             }
+
+            /* ===== Dynamic Review Stats & Filter Logic ===== */
+            document.addEventListener('DOMContentLoaded', function () {
+                const reviews = document.querySelectorAll('.review-card-premium');
+                const total = reviews.length;
+                if (total === 0) return;
+
+                // 1. Calculate count for each star rating
+                const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+                reviews.forEach(card => {
+                    const rating = parseInt(card.dataset.rating);
+                    if (counts[rating] !== undefined) {
+                        counts[rating]++;
+                    }
+                });
+
+                // Update filter badges with exact counts
+                document.querySelectorAll('.filter-count').forEach(span => {
+                    const star = parseInt(span.dataset.countStar);
+                    span.textContent = counts[star] || 0;
+                });
+
+                // Update Progress Bars distribution percentages
+                document.querySelectorAll('.star-row').forEach(row => {
+                    const star = parseInt(row.dataset.star);
+                    const count = counts[star] || 0;
+                    const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+
+                    const bar = row.querySelector('.progress-bar');
+                    const label = row.querySelector('.star-count-label');
+
+                    if (bar) {
+                        bar.style.width = percent + '%';
+                        bar.setAttribute('aria-valuenow', percent);
+                    }
+                    if (label) {
+                        label.textContent = percent + '%';
+                    }
+                });
+
+                // 2. Avatar Gradient Generator (Soft, modern color pairs)
+                const GRADIENTS = [
+                    ['#6366f1', '#4f46e5'], // Indigo
+                    ['#ec4899', '#db2777'], // Pink
+                    ['#3b82f6', '#1d4ed8'], // Blue
+                    ['#10b981', '#059669'], // Emerald
+                    ['#f59e0b', '#d97706'], // Amber
+                    ['#8b5cf6', '#7c3aed'], // Violet
+                    ['#06b6d4', '#0891b2'], // Cyan
+                    ['#f97316', '#ea580c']  // Orange
+                ];
+
+                function getAvatarGradient(name) {
+                    let hash = 0;
+                    for (let i = 0; i < name.length; i++) {
+                        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+                    }
+                    const index = Math.abs(hash) % GRADIENTS.length;
+                    return `linear-gradient(135deg, ${GRADIENTS[index][0]} 0%, ${GRADIENTS[index][1]} 100%)`;
+                }
+
+                document.querySelectorAll('.avatar-circle-gradient').forEach(avatar => {
+                    const name = avatar.nextElementSibling ? avatar.nextElementSibling.querySelector('h6').textContent : 'User';
+                    avatar.style.background = getAvatarGradient(name);
+                });
+
+                // 3. Interactive Filtering
+                const filterBtns = document.querySelectorAll('.btn-filter-pill');
+                const emptyState = document.getElementById('emptyFilterState');
+
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        // Toggle active state
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+
+                        const filterValue = this.dataset.filter;
+                        let visibleCount = 0;
+
+                        reviews.forEach(card => {
+                            const rating = card.dataset.rating;
+
+                            // Apply subtle animation
+                            card.style.opacity = '0';
+
+                            setTimeout(() => {
+                                if (filterValue === 'all' || rating === filterValue) {
+                                    card.classList.remove('d-none');
+                                    visibleCount++;
+                                    // Fade-in animation
+                                    setTimeout(() => {
+                                        card.style.opacity = '1';
+                                    }, 50);
+                                } else {
+                                    card.classList.add('d-none');
+                                }
+
+                                // Show/hide empty state
+                                if (visibleCount === 0) {
+                                    emptyState.classList.remove('d-none');
+                                } else {
+                                    emptyState.classList.add('d-none');
+                                }
+                            }, 200);
+                        });
+                    });
+                });
+            });
         </script>
         <style>
             .info-card {
@@ -712,56 +1035,366 @@
                 margin-top: 2px;
             }
 
-            .schedule-item {
-                border: none;
-                margin-bottom: 10px;
+            /* ================= PREMIUM TIMELINE ================= */
+
+            .tour-schedule-premium {
+                font-family: 'Inter', 'Poppins', sans-serif;
+            }
+
+            .schedule-title {
+                font-size: 2rem;
+                color: #111827;
+                letter-spacing: -0.5px;
+            }
+
+            .schedule-subtitle {
+                font-size: 1rem;
+                color: #6b7280;
+                max-width: 600px;
+                line-height: 1.6;
+            }
+
+            /* ================= COMPACT LIST & MODAL ================= */
+
+            .glass-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(16px);
+                border: 1px solid #e5e7eb;
+                border-radius: 24px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
                 overflow: hidden;
             }
 
-            .accordion-button {
-                background: var(--bs-body-bg);
-                color: var(--bs-body-color);
-                transition: 0.25s;
+            .compact-day-item {
+                padding: 1.25rem 1.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border-bottom: 1px solid #f3f4f6;
             }
 
-            .accordion-button:not(.collapsed) {
-                background: var(--bs-primary);
-                color: #111 !important;
+            .compact-day-item:last-child {
+                border-bottom: none;
             }
 
-            .accordion-body {
-                background: var(--bs-body-bg);
+            .compact-day-item:hover {
+                background: #f8fafc;
             }
 
-            .schedule-line {
-                border-left: 2px dashed var(--bs-primary);
-                padding-left: 20px;
-                position: relative;
+            .compact-day-item:hover .arrow-icon {
+                transform: translateX(4px);
+                color: #1E88E5 !important;
             }
 
-            .schedule-line::before {
-                content: "";
-                width: 10px;
-                height: 10px;
-                background: var(--bs-primary);
-                border-radius: 50%;
+            .day-badge-compact {
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                color: #0284c7;
+                font-weight: 700;
+                font-size: 0.85rem;
+                padding: 6px 12px;
+                border-radius: 12px;
+                white-space: nowrap;
+            }
+
+            .compact-title {
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: #1f2937;
+            }
+
+            .arrow-icon {
+                transition: transform 0.3s ease, color 0.3s ease;
+                font-size: 1.2rem;
+            }
+
+            /* --- Modals --- */
+            .premium-modal .modal-content {
+                border-radius: 24px;
+                overflow: hidden;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                background: #ffffff;
+            }
+
+            .modal-backdrop {
+                background-color: rgba(15, 23, 42, 0.5) !important;
+                backdrop-filter: blur(4px);
+            }
+
+            .btn-close-custom {
                 position: absolute;
-                left: -6px;
-                top: 6px;
+                top: 20px;
+                right: 20px;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                color: #64748b;
+                z-index: 10;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s;
             }
 
-            .schedule-content {
+            .btn-close-custom:hover {
+                background: #f1f5f9;
+                color: #0f172a;
+            }
+
+            .timeline-detail-container {
+                position: relative;
+                padding-left: 28px;
+            }
+
+            .timeline-detail-line {
+                position: absolute;
+                top: 8px;
+                bottom: 0;
+                left: 6px;
+                width: 2px;
+                background: #e2e8f0;
+            }
+
+            .timeline-detail-item {
+                position: relative;
+                margin-bottom: 3rem;
+            }
+
+            .timeline-detail-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .timeline-detail-dot {
+                position: absolute;
+                left: -29px;
+                /* adjust to center on line */
+                top: -2px;
+                width: 16px;
+                height: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #0f172a;
+                font-size: 1.2rem;
+                background: #ffffff;
+            }
+
+            .day-header-card {
+                background: #e0f2fe;
+                border-radius: 16px;
+                padding: 1.5rem;
+            }
+
+            .day-badge-text {
+                color: #0284c7;
+                font-weight: 800;
+                font-size: 1.1rem;
+            }
+
+            .day-content-card {
+                padding: 0 1rem;
+            }
+
+            .schedule-details {
+                line-height: 1.8;
                 font-size: 0.95rem;
-                line-height: 1.7;
-                color: var(--bs-body-color);
             }
 
-            .schedule-meal {
-                color: #6c757d;
+            /* Animations */
+            .premium-modal.fade .modal-dialog {
+                transform: scale(0.98) translateY(10px);
+                opacity: 0;
+                transition: all 0.3s ease-out;
             }
 
-            .schedule-empty {
-                color: #6c757d;
+            .premium-modal.show .modal-dialog {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+
+            /* Scrollbar */
+            .premium-modal .modal-content {
+                max-height: 90vh;
+            }
+
+            .premium-modal .modal-body::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .premium-modal .modal-body::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .premium-modal .modal-body::-webkit-scrollbar-thumb {
+                background: #cbd5e1;
+                border-radius: 10px;
+            }
+
+            @media (max-width: 768px) {
+                .compact-day-item {
+                    padding: 1rem;
+                }
+
+                .compact-title {
+                    font-size: 1rem;
+                }
+
+                .premium-modal .modal-content {
+                    border-radius: 20px;
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+
+                .premium-modal .modal-dialog {
+                    margin: 0;
+                    margin-top: auto;
+                    min-height: 80vh;
+                }
+
+                .premium-modal.fade .modal-dialog {
+                    transform: translateY(100%);
+                }
+
+                .premium-modal.show .modal-dialog {
+                    transform: translateY(0);
+                }
+            }
+
+            /* ================= PREMIUM REVIEWS SECTION ================= */
+            .premium-reviews-section {
+                font-family: 'Inter', system-ui, sans-serif;
+            }
+
+            .reviews-overview-card {
+                background: #ffffff;
+                border: 1px solid #f1f5f9 !important;
+            }
+
+            .rating-huge-wrapper {
+                display: flex;
+                align-items: baseline;
+                justify-content: center;
+                gap: 2px;
+            }
+
+            .rating-huge-number {
+                font-size: 3.5rem;
+                font-weight: 800;
+                color: #0f172a;
+                line-height: 1;
+                letter-spacing: -1px;
+            }
+
+            .rating-huge-max {
+                font-size: 1.25rem;
+                color: #64748b;
+                font-weight: 600;
+            }
+
+            .star-row .progress {
+                background-color: #f1f5f9;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+
+            .star-row .progress-bar {
+                transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            /* Border right only on md screen and up */
+            @media (min-width: 768px) {
+                .border-end-md {
+                    border-right: 1px solid #e2e8f0 !important;
+                }
+            }
+
+            /* Filter Pill Buttons */
+            .btn-filter-pill {
+                background-color: #f8fafc;
+                border: 1px solid #e2e8f0;
+                color: #475569;
+                font-weight: 600;
+                padding: 0.45rem 1rem;
+                border-radius: 50px;
+                transition: all 0.2s ease;
+                font-size: 0.85rem;
+            }
+
+            .btn-filter-pill:hover {
+                background-color: #f1f5f9;
+                border-color: #cbd5e1;
+                color: #1e293b;
+            }
+
+            .btn-filter-pill.active {
+                background-color: #cdd1da;
+                border-color: #0f172a;
+                color: #ffffff;
+                box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+            }
+
+            .btn-filter-pill.active .text-warning {
+                color: #fbbf24 !important;
+            }
+
+            /* Review Card */
+            .review-card-premium {
+                border: 1px solid #f1f5f9 !important;
+                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .review-card-premium:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+                border-color: #e2e8f0 !important;
+            }
+
+            .avatar-circle-gradient {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                font-size: 1.2rem;
+                flex-shrink: 0;
+                background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            }
+
+            .review-text {
+                line-height: 1.6;
+                font-size: 0.95rem;
+                color: #475569 !important;
+            }
+
+            /* Rating tags badges colors */
+            .badge-rating-tag {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+                font-weight: 600;
+            }
+
+            .badge-rating-tag.rating-5 {
+                background-color: #ecfdf5;
+                color: #059669;
+            }
+
+            .badge-rating-tag.rating-4 {
+                background-color: #eff6ff;
+                color: #2563eb;
+            }
+
+            .badge-rating-tag.rating-3 {
+                background-color: #fefbeb;
+                color: #d97706;
+            }
+
+            .badge-rating-tag.rating-2 {
+                background-color: #fff7ed;
+                color: #ea580c;
+            }
+
+            .badge-rating-tag.rating-1 {
+                background-color: #fff1f2;
+                color: #e11d48;
             }
         </style>
     </th:block>

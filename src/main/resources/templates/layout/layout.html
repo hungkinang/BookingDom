@@ -13,22 +13,92 @@
     <link rel="icon" type="image/png" sizes="16x16" th:href="@{/favicon-16.png}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .navbar-floating {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 40px !important;
+            margin: 15px auto;
+            width: 100%;
+            max-width: 928px !important;
+            height: 56px;
+            padding: 0 25px !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08) !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-floating .nav-link {
+            font-weight: 600;
+            color: #4a5568 !important;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 0.5rem 1.25rem !important;
+            transition: color 0.2s;
+        }
+
+        .navbar-floating .nav-link:hover {
+            color: #3498DB !important;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-floating {
+                border-radius: 20px !important;
+                padding: 15px;
+                margin: 10px auto;
+                max-width: 95%;
+            }
+
+            .mega-menu {
+                width: 100% !important;
+                left: 0 !important;
+                transform: none !important;
+            }
+        }
+
+        .btn-login-premium {
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+            color: #ffffff !important;
+            border-radius: 30px;
+            padding: 0.6rem 1.8rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-login-premium:hover {
+            background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+            color: #ffffff !important;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow fixed-top py-0">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-floating">
+        <div class="container-fluid">
 
             <a class="navbar-brand fw-bold text-dark py-0" th:href="@{/}">
-                <img th:src="@{/favicon.icon}" alt="ZakiBooking" height="80" class="rounded">
+                <img th:src="@{/favicon.icon}" alt="BookingDom" height="40" class="rounded">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link" th:href="@{#}">Tour</a></li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Center Menu -->
+                <ul class="navbar-nav mx-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/tour}">Tour</a></li>
 
                     <li class="nav-item dropdown position-static-lg">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Điểm đến</a>
@@ -88,10 +158,14 @@
                         </div>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link me-3" th:href="@{#}">Liên hệ</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Liên hệ</a></li>
+                </ul>
 
+                <!-- Right Side Actions -->
+                <ul class="navbar-nav align-items-center gap-2 mt-3 mt-lg-0">
                     <li class="nav-item" sec:authorize="isAnonymous()">
-                        <a th:href="@{/login}" class="btn btn-primary">Đăng nhập</a>
+                        <a th:href="@{/login}" class="btn btn-login-premium"><i
+                                class="bi bi-person-circle me-2 fs-5"></i> Đăng nhập</a>
                     </li>
 
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
@@ -124,9 +198,10 @@
                             </li>
                         </ul>
                     </li>
-                    <li sec:authorize="hasRole('ADMIN')" class="dropdown ms-3">
+                    <li sec:authorize="hasRole('ADMIN')" class="dropdown ms-lg-2">
                         <a th:href="@{/admin}"
-                            class="btn btn-outline-dark fw-bold px-3 rounded-pill shadow-sm">Manager</a>
+                            class="btn btn-outline-dark fw-bold px-4 py-2 rounded-pill transition-all"
+                            style="border-width: 2px;">Manager</a>
                     </li>
                 </ul>
             </div>

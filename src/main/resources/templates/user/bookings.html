@@ -101,127 +101,136 @@
                     <div class="tab-content" id="bookingTabsContent">
                         <!-- Tab: All -->
                         <div class="tab-pane fade show active" id="all" role="tabpanel">
-                            <div th:replace="~{::bookingList(${bookings})}"></div>
+                            <div th:replace="~{::bookingList(${bookings}, 'all')}"></div>
                         </div>
                         <!-- Tab: Pending -->
                         <div class="tab-pane fade" id="pending" role="tabpanel">
-                            <div th:replace="~{::bookingList(${pendingBookings})}"></div>
+                            <div th:replace="~{::bookingList(${pendingBookings}, 'pending')}"></div>
                         </div>
                         <!-- Tab: Paid (Confirmed) -->
                         <div class="tab-pane fade" id="paid" role="tabpanel">
-                            <div th:replace="~{::bookingList(${paidBookings})}"></div>
+                            <div th:replace="~{::bookingList(${paidBookings}, 'paid')}"></div>
                         </div>
                         <!-- Tab: Failed/Expired -->
                         <div class="tab-pane fade" id="failed" role="tabpanel">
-                            <div th:replace="~{::bookingList(${failedBookings})}"></div>
+                            <div th:replace="~{::bookingList(${failedBookings}, 'failed')}"></div>
                         </div>
                     </div>
 
                     <!-- Fragments for reusable list -->
-                    <div th:fragment="bookingList(list)">
+                    <div th:fragment="bookingList(list, tabId)" th:if="${list != null}">
+                        <!-- Empty State -->
                         <div th:if="${#lists.isEmpty(list)}"
-                            class="text-center py-5 bg-white rounded-4 shadow-sm border">
-                            <i class="bi bi-calendar-x fs-1 text-muted"></i>
-                            <p class="mt-3 text-muted">Không tìm thấy đơn đặt chỗ nào.</p>
+                            class="text-center py-5 bg-white rounded-4 shadow-sm border empty-state-box">
+                            <div class="empty-state-icon mb-3">
+                                <i class="bi bi-calendar-x"></i>
+                            </div>
+                            <h6 class="fw-bold text-dark mb-1">Không có đơn nào</h6>
+                            <p th:if="${tabId == 'all'}" class="text-muted small mb-0">Bạn chưa có đơn đặt chỗ nào.</p>
+                            <p th:unless="${tabId == 'all'}" class="text-muted small mb-0">Không có đơn đặt chỗ nào ở
+                                trạng thái này.</p>
                         </div>
 
-                        <div class="row g-3" th:if="${not #lists.isEmpty(list)}">
-                            <div class="col-12" th:each="booking : ${list}">
-                                <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3">
-                                    <div class="row g-0">
-                                        <div class="col-md-3">
-                                            <img th:src="${booking.idChuyenDi.hinhAnh}" class="img-fluid h-100"
-                                                style="object-fit: cover; min-height: 150px;">
-                                        </div>
-                                        <div class="col-md-9">
-                                            <div class="card-body p-4">
-                                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                                    <h5 class="fw-bold mb-0" th:text="${booking.idChuyenDi.tieuDe}">
-                                                    </h5>
-                                                    <div>
-                                                        <span
-                                                            th:if="${booking.trangThai == 'PENDING' && booking.createdAt != null && booking.createdAt.plusMinutes(15).isBefore(currentTime)}"
-                                                            class="badge rounded-pill px-3 py-2 bg-secondary">HẾT
-                                                            HẠN</span>
-                                                        <span
-                                                            th:unless="${booking.trangThai == 'PENDING' && booking.createdAt != null && booking.createdAt.plusMinutes(15).isBefore(currentTime)}"
-                                                            th:class="'badge rounded-pill px-3 py-2 ' + 
-                                                          (${booking.trangThai == 'PAID' ? 'bg-success' : 
-                                                           (booking.trangThai == 'PENDING' ? 'bg-warning text-dark' : 'bg-danger')})"
-                                                            th:text="${booking.trangThai}">PENDING</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row g-3 small text-muted mb-3">
-                                                    <div class="col-sm-6">
-                                                        <i class="bi bi-calendar-check me-1"></i> Ngày đặt:
-                                                        <span
-                                                            th:text="${#temporals.format(booking.ngayDat, 'dd/MM/yyyy')}"></span>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <i class="bi bi-people me-1"></i> Số lượng:
-                                                        <span th:text="${booking.soLuong} + ' khách'"></span>
-                                                    </div>
-                                                    <div class="col-sm-6"
-                                                        th:if="${booking.trangThai == 'PENDING' && booking.createdAt != null}">
-                                                        <i class="bi bi-clock me-1 text-danger"></i> Thời hạn:
-                                                        <span class="text-danger fw-bold"
-                                                            th:text="${#temporals.format(booking.createdAt.plusMinutes(15), 'HH:mm')}"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div
-                                                    class="d-flex justify-content-between align-items-center mt-2 pt-3 border-top">
-                                                    <div>
-                                                        <span class="text-muted small">Tổng:</span>
-                                                        <h5 class="text-danger fw-bold mb-0 d-inline ms-2"
-                                                            th:text="${#numbers.formatDecimal(booking.tongGia, 0, 'COMMA', 0, 'POINT')} + ' ₫'">
+                        <!-- Booking Cards -->
+                        <div th:if="${not #lists.isEmpty(list)}">
+                            <div class="booking-list-container" th:attr="data-tab=${tabId}">
+                                <div class="col-12 booking-item" th:each="booking : ${list}">
+                                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3 booking-card">
+                                        <div class="row g-0">
+                                            <div class="col-md-3 booking-img-wrap">
+                                                <img th:src="${booking.idChuyenDi.hinhAnh}" class="booking-thumb"
+                                                    alt="Tour">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="card-body p-4">
+                                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                                        <h5 class="fw-bold mb-0" th:text="${booking.idChuyenDi.tieuDe}">
                                                         </h5>
+                                                        <div>
+                                                            <span
+                                                                th:if="${booking.trangThai == 'PENDING' && booking.createdAt != null && booking.createdAt.plusMinutes(15).isBefore(currentTime)}"
+                                                                class="badge rounded-pill px-3 py-2 bg-danger">HẾT
+                                                                HẠN</span>
+                                                            <span
+                                                                th:unless="${booking.trangThai == 'PENDING' && booking.createdAt != null && booking.createdAt.plusMinutes(15).isBefore(currentTime)}"
+                                                                th:class="'badge rounded-pill px-3 py-2 ' +
+                                                              (${booking.trangThai == 'PAID' ? 'bg-success' :
+                                                               (booking.trangThai == 'PENDING' ? 'bg-warning text-dark' : 'bg-danger')})"
+                                                                th:text="${booking.trangThai}">TRẠNG THÁI</span>
+                                                        </div>
                                                     </div>
-                                                    <div class="d-flex gap-2">
-                                                        <!-- Pay Now Button -->
-                                                        <a th:if="${booking.trangThai == 'PENDING' && (booking.createdAt == null || !booking.createdAt.plusMinutes(15).isBefore(currentTime))}"
-                                                            th:href="@{/booking/repay/{id}(id=${booking.id})}"
-                                                            class="btn btn-primary rounded-pill btn-sm px-4">
-                                                            Thanh toán ngay
-                                                        </a>
 
-                                                        <!-- Review Button -->
-                                                        <button
-                                                            th:if="${booking.trangThai == 'PAID' && booking.idChuyenDi.ngayKetThuc != null && !booking.idChuyenDi.ngayKetThuc.isAfter(#temporals.createToday())}"
-                                                            type="button"
-                                                            class="btn btn-warning rounded-pill btn-sm px-4"
-                                                            th:data-id="${booking.id}"
-                                                            th:data-tour-id="${booking.idChuyenDi.id}"
-                                                            th:data-tour-title="${booking.idChuyenDi.tieuDe}"
-                                                            onclick="openReviewModal(this)">
-                                                            <i class="bi bi-star me-1"></i>Đánh giá
-                                                        </button>
+                                                    <div class="row g-3 small text-muted mb-3">
+                                                        <div class="col-sm-6">
+                                                            <i class="bi bi-calendar-check me-1"></i> Ngày đặt:
+                                                            <span
+                                                                th:text="${#temporals.format(booking.ngayDat, 'dd/MM/yyyy')}"></span>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <i class="bi bi-people me-1"></i> Số lượng:
+                                                            <span th:text="${booking.soLuong} + ' khách'"></span>
+                                                        </div>
+                                                        <div class="col-sm-6"
+                                                            th:if="${booking.trangThai == 'PENDING' && booking.createdAt != null}">
+                                                            <i class="bi bi-clock me-1 text-danger"></i> Thời hạn:
+                                                            <span class="text-danger fw-bold"
+                                                                th:text="${#temporals.format(booking.createdAt.plusMinutes(15), 'HH:mm')}"></span>
+                                                        </div>
+                                                    </div>
 
-                                                        <!-- Invoice Button -->
-                                                        <button th:if="${booking.trangThai == 'PAID'}"
-                                                            class="btn btn-light border rounded-pill btn-sm px-3"
-                                                            th:data-id="${booking.id}" th:data-user="${user.hoTen}"
-                                                            th:data-tour="${booking.idChuyenDi.tieuDe}"
-                                                            th:data-people="${booking.soLuong}"
-                                                            th:data-total="${booking.tongGia}"
-                                                            th:data-date="${#temporals.format(booking.ngayDat, 'dd/MM/yyyy')}"
-                                                            onclick="showInvoice(this)">
-                                                            <i class="bi bi-file-earmark-text me-1"></i>Hoá đơn
-                                                        </button>
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center mt-2 pt-3 border-top">
+                                                        <div>
+                                                            <span class="text-muted small">Tổng:</span>
+                                                            <h5 class="text-danger fw-bold mb-0 d-inline ms-2"
+                                                                th:text="${#numbers.formatDecimal(booking.tongGia, 0, 'COMMA', 0, 'POINT')} + ' ₫'">
+                                                            </h5>
+                                                        </div>
+                                                        <div class="d-flex gap-2 flex-wrap">
+                                                            <!-- Pay Now Button -->
+                                                            <a th:if="${booking.trangThai == 'PENDING' && (booking.createdAt == null || !booking.createdAt.plusMinutes(15).isBefore(currentTime))}"
+                                                                th:href="@{/booking/repay/{id}(id=${booking.id})}"
+                                                                class="btn btn-primary rounded-pill btn-sm px-4">
+                                                                Thanh toán ngay
+                                                            </a>
 
-                                                        <!-- Itinerary Button -->
-                                                        <button th:if="${booking.trangThai == 'PAID'}"
-                                                            class="btn btn-info text-white rounded-pill btn-sm px-3"
-                                                            th:data-tour-id="${booking.idChuyenDi.id}"
-                                                            onclick="showItinerary(this)">
-                                                            <i class="bi bi-map me-1"></i>Lịch trình
-                                                        </button>
+                                                            <!-- Review Button -->
+                                                            <button
+                                                                th:if="${booking.trangThai == 'PAID' && booking.idChuyenDi.ngayKetThuc != null && !booking.idChuyenDi.ngayKetThuc.isAfter(#temporals.createToday())}"
+                                                                type="button"
+                                                                class="btn btn-outline-warning rounded-pill btn-sm px-4"
+                                                                th:data-id="${booking.id}"
+                                                                th:data-tour-id="${booking.idChuyenDi.id}"
+                                                                th:data-tour-title="${booking.idChuyenDi.tieuDe}"
+                                                                onclick="openReviewModal(this)">
+                                                                <i class="bi bi-star me-1"></i>Đánh giá
+                                                            </button>
 
-                                                        <a th:href="@{/tour/{id}(id=${booking.idChuyenDi.id})}"
-                                                            class="btn btn-outline-primary rounded-pill btn-sm px-3">
-                                                            Chi tiết tour
-                                                        </a>
+                                                            <!-- Invoice Button -->
+                                                            <button th:if="${booking.trangThai == 'PAID'}"
+                                                                class="btn btn-light border rounded-pill btn-sm px-3"
+                                                                th:data-id="${booking.id}" th:data-user="${user.hoTen}"
+                                                                th:data-tour="${booking.idChuyenDi.tieuDe}"
+                                                                th:data-people="${booking.soLuong}"
+                                                                th:data-total="${booking.tongGia}"
+                                                                th:data-date="${#temporals.format(booking.ngayDat, 'dd/MM/yyyy')}"
+                                                                onclick="showInvoice(this)">
+                                                                <i class="bi bi-file-earmark-text me-1"></i>Hoá đơn
+                                                            </button>
+
+                                                            <!-- Itinerary Button -->
+                                                            <button th:if="${booking.trangThai == 'PAID'}"
+                                                                class="btn btn-outline-info rounded-pill btn-sm px-3"
+                                                                th:data-tour-id="${booking.idChuyenDi.id}"
+                                                                onclick="showItinerary(this)">
+                                                                <i class="bi bi-map me-1"></i>Lịch trình
+                                                            </button>
+
+                                                            <a th:href="@{/tour/{id}(id=${booking.idChuyenDi.id})}"
+                                                                class="btn btn-outline-primary rounded-pill btn-sm px-3">
+                                                                Chi tiết tour
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,6 +238,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Pagination placeholder (filled by JS) -->
+                            <div class="booking-pagination" th:attr="data-tab=${tabId}"></div>
                         </div>
                     </div>
 
@@ -236,48 +247,93 @@
 
                     <!-- Review Modal -->
                     <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content border-0 rounded-4 shadow">
-                                <div class="modal-header border-0 pb-0">
-                                    <h5 class="fw-bold">Đánh giá chuyến đi</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                        <div class="modal-dialog modal-dialog-centered review-modal-dialog">
+                            <div class="modal-content border-0 rounded-4 shadow-lg review-modal-content">
+
+                                <!-- Gradient Header -->
+                                <div class="review-modal-header">
+                                    <div class="review-header-deco"></div>
+                                    <div class="d-flex align-items-center gap-3 position-relative">
+                                        <div class="review-header-icon">
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="fw-bold mb-0 text-white">Đánh giá chuyến đi</h5>
+                                            <p class="mb-0 text-white opacity-75 small">Chia sẻ cảm nhận của bạn</p>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="review-close-btn" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
                                 </div>
+
                                 <form th:action="@{/danh-gia/add}" method="post">
                                     <div class="modal-body p-4">
                                         <input type="hidden" name="tourId" id="reviewTourId">
-                                        <p class="text-muted small mb-4">Chia sẻ trải nghiệm của bạn về tour
-                                            <strong id="reviewTourTitle">...</strong>
-                                        </p>
 
+                                        <!-- Tour name chip -->
+                                        <div class="review-tour-chip mb-4">
+                                            <i class="bi bi-geo-alt-fill me-2"></i>
+                                            <span id="reviewTourTitle">...</span>
+                                        </div>
+
+                                        <!-- Star Rating -->
                                         <div class="mb-4 text-center">
-                                            <label class="d-block mb-2 small text-muted">Mức độ hài lòng</label>
-                                            <div class="star-rating fs-3">
-                                                <input type="radio" name="diem" value="5" id="s5" checked
-                                                    class="d-none">
-                                                <label for="s5" class="bi bi-star-fill cursor-pointer"></label>
-                                                <input type="radio" name="diem" value="4" id="s4" class="d-none">
-                                                <label for="s4" class="bi bi-star-fill cursor-pointer"></label>
-                                                <input type="radio" name="diem" value="3" id="s3" class="d-none">
-                                                <label for="s3" class="bi bi-star-fill cursor-pointer"></label>
-                                                <input type="radio" name="diem" value="2" id="s2" class="d-none">
-                                                <label for="s2" class="bi bi-star-fill cursor-pointer"></label>
-                                                <input type="radio" name="diem" value="1" id="s1" class="d-none">
-                                                <label for="s1" class="bi bi-star-fill cursor-pointer"></label>
+                                            <p class="small fw-semibold text-muted mb-3">Mức độ hài lòng của bạn</p>
+                                            <div class="star-rating-wrap">
+                                                <div class="star-rating-group" id="starGroup">
+                                                    <input type="radio" name="diem" value="1" id="s1" class="d-none">
+                                                    <label for="s1" class="star-label" data-value="1" data-tip="Tệ">
+                                                        <i class="bi bi-star-fill star-icon"></i>
+                                                    </label>
+                                                    <input type="radio" name="diem" value="2" id="s2" class="d-none">
+                                                    <label for="s2" class="star-label" data-value="2"
+                                                        data-tip="Không hài lòng">
+                                                        <i class="bi bi-star-fill star-icon"></i>
+                                                    </label>
+                                                    <input type="radio" name="diem" value="3" id="s3" class="d-none">
+                                                    <label for="s3" class="star-label" data-value="3"
+                                                        data-tip="Bình thường">
+                                                        <i class="bi bi-star-fill star-icon"></i>
+                                                    </label>
+                                                    <input type="radio" name="diem" value="4" id="s4" class="d-none">
+                                                    <label for="s4" class="star-label" data-value="4"
+                                                        data-tip="Hài lòng">
+                                                        <i class="bi bi-star-fill star-icon"></i>
+                                                    </label>
+                                                    <input type="radio" name="diem" value="5" id="s5" class="d-none"
+                                                        checked>
+                                                    <label for="s5" class="star-label" data-value="5"
+                                                        data-tip="Tuyệt vời!">
+                                                        <i class="bi bi-star-fill star-icon"></i>
+                                                    </label>
+                                                </div>
+                                                <!-- Rating Label -->
+                                                <div class="star-rating-label" id="starRatingLabel">
+                                                    <span class="star-emoji" id="starEmoji">🤩</span>
+                                                    <span class="star-text" id="starText">Tuyệt vời!</span>
+                                                    <span class="star-score" id="starScore">5/5</span>
+                                                </div>
                                             </div>
                                         </div>
 
+                                        <!-- Comment -->
                                         <div class="mb-3">
                                             <label class="form-label small fw-bold">Bình luận của bạn</label>
-                                            <textarea name="binhLuan" class="form-control rounded-3" rows="4"
-                                                placeholder="Cảm nhận của bạn về chuyến đi..." required></textarea>
+                                            <textarea name="binhLuan" id="reviewComment"
+                                                class="form-control review-textarea rounded-3" rows="4"
+                                                placeholder="Chia sẻ trải nghiệm thực tế của bạn về tour này..."
+                                                required></textarea>
                                         </div>
                                     </div>
-                                    <div class="modal-footer border-0 pt-0">
-                                        <button type="button" class="btn btn-light rounded-pill px-4"
+
+                                    <div class="modal-footer border-0 pt-0 px-4 pb-4">
+                                        <button type="button" class="btn review-cancel-btn rounded-pill px-4"
                                             data-bs-dismiss="modal">Hủy</button>
-                                        <button type="submit" class="btn btn-primary rounded-pill px-4">Gửi đánh
-                                            giá</button>
+                                        <button type="submit" class="btn review-submit-btn rounded-pill px-5">
+                                            <i class="bi bi-send-fill me-2"></i>Gửi đánh giá
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -397,6 +453,122 @@
                     </div>
 
                     <style>
+                        /* ===== EMPTY STATE ===== */
+                        .empty-state-box {
+                            animation: fadeInUp 0.5s ease both;
+                        }
+
+                        .empty-state-icon {
+                            width: 72px;
+                            height: 72px;
+                            border-radius: 20px;
+                            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto;
+                            font-size: 2rem;
+                            color: #94a3b8;
+                        }
+
+                        /* ===== BOOKING CARD ===== */
+                        .booking-card {
+                            transition: box-shadow 0.25s ease, transform 0.25s ease;
+                        }
+
+                        .booking-card:hover {
+                            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+                            transform: translateY(-2px);
+                        }
+
+                        .booking-img-wrap {
+                            overflow: hidden;
+                            max-height: 200px;
+                        }
+
+                        .booking-thumb {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            min-height: 150px;
+                            transition: transform 0.4s ease;
+                        }
+
+                        .booking-card:hover .booking-thumb {
+                            transform: scale(1.05);
+                        }
+
+                        /* ===== PAGINATION ===== */
+                        .booking-pagination {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 6px;
+                            padding: 1.25rem 0 0.5rem;
+                            flex-wrap: wrap;
+                        }
+
+                        .pg-btn {
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            min-width: 38px;
+                            height: 38px;
+                            padding: 0 10px;
+                            border-radius: 10px;
+                            border: 1.5px solid #e2e8f0;
+                            background: #fff;
+                            color: #475569;
+                            font-weight: 600;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            text-decoration: none;
+                        }
+
+                        .pg-btn:hover:not(.active):not(.disabled) {
+                            background: #f1f5f9;
+                            border-color: #667eea;
+                            color: #667eea;
+                            transform: translateY(-1px);
+                        }
+
+                        .pg-btn.active {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: #fff;
+                            border-color: transparent;
+                            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+                        }
+
+                        .pg-btn.disabled {
+                            opacity: 0.4;
+                            cursor: not-allowed;
+                        }
+
+                        .pg-info {
+                            font-size: 0.82rem;
+                            color: #94a3b8;
+                            font-weight: 500;
+                            padding: 0 4px;
+                        }
+
+                        @keyframes fadeInUp {
+                            from {
+                                opacity: 0;
+                                transform: translateY(20px);
+                            }
+
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+
+                        .booking-item {
+                            animation: fadeInUp 0.35s ease both;
+                        }
+
+                        /* ===== ITINERARY TIMELINE ===== */
                         .itinerary-timeline {
                             border-left: 2px solid #e9ecef;
                             padding-left: 1.5rem;
@@ -444,6 +616,351 @@
                             color: #adb5bd;
                             margin-top: 0.3rem;
                         }
+
+                        /* ===== REVIEW MODAL ===== */
+                        .review-modal-dialog {
+                            max-width: 480px;
+                        }
+
+                        .review-modal-content {
+                            overflow: hidden;
+                            border-radius: 20px !important;
+                            background: #fff;
+                        }
+
+                        /* Gradient Header */
+                        .review-modal-header {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            padding: 1.5rem 1.5rem 1.25rem;
+                            position: relative;
+                            overflow: hidden;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                        }
+
+                        .review-header-deco {
+                            position: absolute;
+                            width: 150px;
+                            height: 150px;
+                            border-radius: 50%;
+                            background: rgba(255, 255, 255, 0.08);
+                            right: -40px;
+                            top: -60px;
+                            pointer-events: none;
+                        }
+
+                        .review-header-deco::after {
+                            content: '';
+                            position: absolute;
+                            width: 80px;
+                            height: 80px;
+                            border-radius: 50%;
+                            background: rgba(255, 255, 255, 0.06);
+                            left: -30px;
+                            bottom: -20px;
+                        }
+
+                        .review-header-icon {
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 14px;
+                            background: rgba(255, 255, 255, 0.2);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 1.4rem;
+                            color: #fff;
+                            flex-shrink: 0;
+                            backdrop-filter: blur(4px);
+                        }
+
+                        .review-close-btn {
+                            background: rgba(255, 255, 255, 0.15);
+                            border: none;
+                            border-radius: 10px;
+                            color: #fff;
+                            width: 36px;
+                            height: 36px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.9rem;
+                            cursor: pointer;
+                            transition: background 0.2s;
+                            flex-shrink: 0;
+                        }
+
+                        .review-close-btn:hover {
+                            background: rgba(255, 255, 255, 0.3);
+                        }
+
+                        /* Tour chip */
+                        .review-tour-chip {
+                            display: inline-flex;
+                            align-items: center;
+                            background: linear-gradient(135deg, #f0f4ff, #e8eeff);
+                            border: 1px solid #c7d2fe;
+                            border-radius: 50px;
+                            padding: 0.45rem 1rem;
+                            font-size: 0.85rem;
+                            font-weight: 600;
+                            color: #4c51bf;
+                            max-width: 100%;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+
+                        .review-tour-chip i {
+                            color: #764ba2;
+                        }
+
+                        /* ===== STAR RATING ===== */
+                        .star-rating-wrap {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 1.25rem;
+                        }
+
+                        .star-rating-group {
+                            display: flex;
+                            gap: 8px;
+                            align-items: center;
+                        }
+
+                        .star-label {
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition:
+                                transform 0.25s cubic-bezier(.34, 1.56, .64, 1),
+                                opacity 0.2s ease;
+                            position: relative;
+                        }
+
+                        .star-label:hover {
+                            transform: scale(1.3) !important;
+                        }
+
+                        /* Dim stars that are not hovered/lit when interacting with the group */
+                        .star-rating-group:hover .star-label:not(.lit) {
+                            opacity: 0.35;
+                            transform: scale(0.9);
+                        }
+
+                        .star-icon {
+                            font-size: 2.8rem;
+                            color: #cbd5e1;
+                            transition:
+                                color 0.25s ease,
+                                filter 0.25s ease,
+                                transform 0.25s cubic-bezier(.34, 1.56, .64, 1);
+                            display: block;
+                            line-height: 1;
+                        }
+
+                        /* Lit (selected / hover) state */
+                        .star-label.lit .star-icon {
+                            color: #f59e0b;
+                            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.55));
+                        }
+
+                        /* Bounce animation on click */
+                        .star-label.bounce .star-icon {
+                            animation: starBounce 0.45s cubic-bezier(.36, .07, .19, .97) both;
+                        }
+
+                        @keyframes starBounce {
+                            0% {
+                                transform: scale(1);
+                            }
+
+                            30% {
+                                transform: scale(1.5) rotate(-10deg);
+                            }
+
+                            50% {
+                                transform: scale(0.9) rotate(5deg);
+                            }
+
+                            70% {
+                                transform: scale(1.2) rotate(-3deg);
+                            }
+
+                            100% {
+                                transform: scale(1) rotate(0deg);
+                            }
+                        }
+
+                        /* Glow pulse on selected star */
+                        .star-label.selected .star-icon {
+                            color: #f59e0b;
+                            filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.7));
+                            animation: starPulse 2s ease-in-out infinite;
+                        }
+
+                        @keyframes starPulse {
+
+                            0%,
+                            100% {
+                                filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+                            }
+
+                            50% {
+                                filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.9));
+                            }
+                        }
+
+                        /* Rating Label */
+                        .star-rating-label {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+                            border: 1.5px solid #fcd34d;
+                            border-radius: 50px;
+                            padding: 0.4rem 1.2rem;
+                            transition: all 0.3s ease;
+                            min-width: 180px;
+                            justify-content: center;
+                        }
+
+                        .star-emoji {
+                            font-size: 1.3rem;
+                            line-height: 1;
+                            transition: all 0.3s ease;
+                        }
+
+                        .star-text {
+                            font-weight: 700;
+                            font-size: 0.95rem;
+                            color: #92400e;
+                            transition: all 0.3s ease;
+                        }
+
+                        .star-score {
+                            font-size: 0.8rem;
+                            color: #b45309;
+                            font-weight: 600;
+                            opacity: 0.8;
+                        }
+
+                        /* Rating label colour variants */
+                        .star-rating-label.rating-1 {
+                            background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+                            border-color: #fca5a5;
+                        }
+
+                        .star-rating-label.rating-1 .star-text {
+                            color: #991b1b;
+                        }
+
+                        .star-rating-label.rating-1 .star-score {
+                            color: #b91c1c;
+                        }
+
+                        .star-rating-label.rating-2 {
+                            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+                            border-color: #fdba74;
+                        }
+
+                        .star-rating-label.rating-2 .star-text {
+                            color: #9a3412;
+                        }
+
+                        .star-rating-label.rating-2 .star-score {
+                            color: #c2410c;
+                        }
+
+                        .star-rating-label.rating-3 {
+                            background: linear-gradient(135deg, #fffbeb, #fef9c3);
+                            border-color: #fde047;
+                        }
+
+                        .star-rating-label.rating-3 .star-text {
+                            color: #713f12;
+                        }
+
+                        .star-rating-label.rating-3 .star-score {
+                            color: #854d0e;
+                        }
+
+                        .star-rating-label.rating-4 {
+                            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+                            border-color: #86efac;
+                        }
+
+                        .star-rating-label.rating-4 .star-text {
+                            color: #14532d;
+                        }
+
+                        .star-rating-label.rating-4 .star-score {
+                            color: #166534;
+                        }
+
+                        .star-rating-label.rating-5 {
+                            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+                            border-color: #fcd34d;
+                        }
+
+                        .star-rating-label.rating-5 .star-text {
+                            color: #78350f;
+                        }
+
+                        .star-rating-label.rating-5 .star-score {
+                            color: #92400e;
+                        }
+
+                        /* Textarea */
+                        .review-textarea {
+                            border: 1.5px solid #e2e8f0;
+                            resize: none;
+                            transition: border-color 0.25s, box-shadow 0.25s;
+                            font-size: 0.9rem;
+                        }
+
+                        .review-textarea:focus {
+                            border-color: #667eea;
+                            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+                            outline: none;
+                        }
+
+                        /* Footer buttons */
+                        .review-cancel-btn {
+                            background: #f1f5f9;
+                            color: #475569;
+                            border: none;
+                            font-weight: 600;
+                            transition: background 0.2s;
+                        }
+
+                        .review-cancel-btn:hover {
+                            background: #e2e8f0;
+                            color: #334155;
+                        }
+
+                        .review-submit-btn {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: #fff;
+                            border: none;
+                            font-weight: 700;
+                            letter-spacing: 0.02em;
+                            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                            transition: transform 0.2s, box-shadow 0.2s;
+                        }
+
+                        .review-submit-btn:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+                            color: #fff;
+                        }
+
+                        .review-submit-btn:active {
+                            transform: translateY(0);
+                        }
                     </style>
 
                     <script>
@@ -458,6 +975,189 @@
 
                             new bootstrap.Modal(document.getElementById('invoiceModal')).show();
                         }
+
+                        /* ===== Star Rating Logic ===== */
+                        const STAR_DATA = {
+                            1: { emoji: '😞', text: 'Tệ', cls: 'rating-1' },
+                            2: { emoji: '😐', text: 'Không hài lòng', cls: 'rating-2' },
+                            3: { emoji: '😊', text: 'Bình thường', cls: 'rating-3' },
+                            4: { emoji: '😄', text: 'Hài lòng', cls: 'rating-4' },
+                            5: { emoji: '🤩', text: 'Tuyệt vời!', cls: 'rating-5' },
+                        };
+
+                        function initStarRating() {
+                            const labels = document.querySelectorAll('.star-label');
+                            const ratingLabel = document.getElementById('starRatingLabel');
+                            const emojiEl = document.getElementById('starEmoji');
+                            const textEl = document.getElementById('starText');
+                            const scoreEl = document.getElementById('starScore');
+
+                            function updateLabel(val, animate) {
+                                const d = STAR_DATA[val];
+                                emojiEl.textContent = d.emoji;
+                                textEl.textContent = d.text;
+                                scoreEl.textContent = val + '/5';
+                                ratingLabel.className = 'star-rating-label ' + d.cls;
+                                if (animate) {
+                                    ratingLabel.style.transform = 'scale(1.08)';
+                                    setTimeout(() => ratingLabel.style.transform = 'scale(1)', 200);
+                                    ratingLabel.style.transition = 'all 0.2s cubic-bezier(.34,1.56,.64,1)';
+                                }
+                            }
+
+                            function lightStars(upTo) {
+                                labels.forEach(lbl => {
+                                    const v = parseInt(lbl.dataset.value);
+                                    lbl.classList.toggle('lit', v <= upTo);
+                                    lbl.classList.toggle('selected', false);
+                                });
+                            }
+
+                            function selectStar(val) {
+                                labels.forEach(lbl => {
+                                    const v = parseInt(lbl.dataset.value);
+                                    const isSelected = v === val;
+                                    lbl.classList.toggle('lit', v <= val);
+                                    lbl.classList.toggle('selected', isSelected);
+                                    if (isSelected) {
+                                        lbl.classList.remove('bounce');
+                                        void lbl.offsetWidth; // reflow
+                                        lbl.classList.add('bounce');
+                                        setTimeout(() => lbl.classList.remove('bounce'), 500);
+                                    }
+                                });
+                                updateLabel(val, true);
+                            }
+
+                            labels.forEach(lbl => {
+                                lbl.addEventListener('mouseenter', () => {
+                                    const val = parseInt(lbl.dataset.value);
+                                    lightStars(val);
+                                    updateLabel(val, false);
+                                });
+                            });
+
+                            document.getElementById('starGroup').addEventListener('mouseleave', () => {
+                                const checked = document.querySelector('input[name="diem"]:checked');
+                                const val = checked ? parseInt(checked.value) : 5;
+                                selectStar(val);
+                            });
+
+                            labels.forEach(lbl => {
+                                lbl.addEventListener('click', () => {
+                                    const val = parseInt(lbl.dataset.value);
+                                    selectStar(val);
+                                });
+                            });
+
+                            // Init with default value
+                            const defaultChecked = document.querySelector('input[name="diem"]:checked');
+                            const defaultVal = defaultChecked ? parseInt(defaultChecked.value) : 5;
+                            selectStar(defaultVal);
+                        }
+
+                        document.addEventListener('DOMContentLoaded', initStarRating);
+
+                        /* ===== Booking Pagination ===== */
+                        (function () {
+                            const PAGE_SIZE = 5;
+
+                            function initPagination(tabId) {
+                                const container = document.querySelector(`.booking-list-container[data-tab="${tabId}"]`);
+                                const paginationEl = document.querySelector(`.booking-pagination[data-tab="${tabId}"]`);
+                                if (!container || !paginationEl) return;
+
+                                const items = Array.from(container.querySelectorAll('.booking-item'));
+                                const total = items.length;
+                                if (total <= PAGE_SIZE) {
+                                    // No need for pagination
+                                    items.forEach(i => i.style.display = '');
+                                    return;
+                                }
+
+                                let currentPage = 1;
+                                const totalPages = Math.ceil(total / PAGE_SIZE);
+
+                                function showPage(page) {
+                                    currentPage = Math.max(1, Math.min(page, totalPages));
+                                    items.forEach((item, idx) => {
+                                        const show = idx >= (currentPage - 1) * PAGE_SIZE && idx < currentPage * PAGE_SIZE;
+                                        item.style.display = show ? '' : 'none';
+                                        if (show) {
+                                            item.style.animationDelay = ((idx % PAGE_SIZE) * 0.06) + 's';
+                                            item.style.animation = 'none';
+                                            void item.offsetWidth;
+                                            item.style.animation = '';
+                                        }
+                                    });
+                                    renderPagination();
+                                    // Scroll to top of list smoothly
+                                    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                }
+
+                                function renderPagination() {
+                                    paginationEl.innerHTML = '';
+
+                                    // Prev button
+                                    const prev = document.createElement('button');
+                                    prev.className = 'pg-btn' + (currentPage === 1 ? ' disabled' : '');
+                                    prev.innerHTML = '<i class="bi bi-chevron-left"></i>';
+                                    prev.title = 'Trang trước';
+                                    if (currentPage > 1) prev.onclick = () => showPage(currentPage - 1);
+                                    paginationEl.appendChild(prev);
+
+                                    // Page number buttons
+                                    const range = getPageRange(currentPage, totalPages);
+                                    range.forEach(p => {
+                                        if (p === '...') {
+                                            const dots = document.createElement('span');
+                                            dots.className = 'pg-info';
+                                            dots.textContent = '...';
+                                            paginationEl.appendChild(dots);
+                                        } else {
+                                            const btn = document.createElement('button');
+                                            btn.className = 'pg-btn' + (p === currentPage ? ' active' : '');
+                                            btn.textContent = p;
+                                            btn.onclick = () => showPage(p);
+                                            paginationEl.appendChild(btn);
+                                        }
+                                    });
+
+                                    // Next button
+                                    const next = document.createElement('button');
+                                    next.className = 'pg-btn' + (currentPage === totalPages ? ' disabled' : '');
+                                    next.innerHTML = '<i class="bi bi-chevron-right"></i>';
+                                    next.title = 'Trang sau';
+                                    if (currentPage < totalPages) next.onclick = () => showPage(currentPage + 1);
+                                    paginationEl.appendChild(next);
+                                }
+
+                                function getPageRange(current, total) {
+                                    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+                                    const pages = [];
+                                    pages.push(1);
+                                    if (current > 3) pages.push('...');
+                                    for (let p = Math.max(2, current - 1); p <= Math.min(total - 1, current + 1); p++) pages.push(p);
+                                    if (current < total - 2) pages.push('...');
+                                    pages.push(total);
+                                    return pages;
+                                }
+
+                                showPage(1);
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                ['all', 'pending', 'paid', 'failed'].forEach(initPagination);
+
+                                // Re-init when switching tabs (items are shown/hidden by Bootstrap)
+                                document.querySelectorAll('[data-bs-toggle="tab"]').forEach(btn => {
+                                    btn.addEventListener('shown.bs.tab', function (e) {
+                                        const targetId = e.target.getAttribute('data-bs-target').replace('#', '');
+                                        initPagination(targetId);
+                                    });
+                                });
+                            });
+                        })();
 
                         function openReviewModal(btn) {
                             const data = btn.dataset;
@@ -474,8 +1174,9 @@
                             const textarea = modalEl.querySelector('textarea');
                             if (textarea) textarea.value = '';
 
+                            // Reset to 5 stars
                             const s5 = document.getElementById('s5');
-                            if (s5) s5.checked = true;
+                            if (s5) { s5.checked = true; initStarRating(); }
 
                             const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                             modal.show();

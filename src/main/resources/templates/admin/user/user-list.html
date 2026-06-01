@@ -63,7 +63,8 @@
                                         <td class="py-3 text-muted small"
                                             th:text="${#temporals.format(row[5], 'dd/MM/yyyy')}"></td>
                                         <td class="py-3 text-center">
-                                            <a th:href="@{#}" class="btn btn-sm btn-outline-dark rounded-pill">
+                                            <a th:href="@{'/admin/user/' + ${row[0]}}"
+                                                class="btn btn-sm btn-outline-dark rounded-pill">
                                                 Hồ sơ
                                             </a>
                                         </td>
