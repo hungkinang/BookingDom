@@ -37,3 +37,6 @@ application-local.properties
 src/main/resources/application.propertiessrc/main/resources/application.properties
 
 .env
+logs/
+*.log
+*.gz
